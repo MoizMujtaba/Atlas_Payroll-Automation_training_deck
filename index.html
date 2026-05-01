@@ -70,7 +70,10 @@
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { font-size: 16px; }
+html {
+  font-size: clamp(15px, 1.1vw, 20px);
+  scroll-behavior: smooth;
+}
 body {
   font-family: 'Nunito', ui-rounded, system-ui, -apple-system, 'Segoe UI', sans-serif;
   color: var(--text);
@@ -81,18 +84,24 @@ body {
 
 /* ── PAGES ── */
 .page {
-  page-break-after: always;
-  padding: 52px 64px;
-  min-height: 100vh;
+  padding: clamp(40px, 5vw, 80px) clamp(28px, 6vw, 88px);
   background: var(--bg);
-  max-width: 980px;
-  margin: 28px auto;
-  border-radius: 6px;
-  box-shadow: 0 2px 28px oklch(25% 0.06 264 / 0.13);
+  max-width: min(980px, 94vw);
+  margin: 24px auto;
+  border-radius: 10px;
+  box-shadow: 0 2px 32px oklch(25% 0.06 264 / 0.12);
+  /* scroll reveal — JS adds .visible */
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.45s ease-out, transform 0.45s ease-out;
 }
-.page:last-child { page-break-after: avoid; }
-@media (min-width: 1200px) { html { font-size: 17px; } }
-@media (min-width: 1600px) { html { font-size: 18px; } .page { max-width: 1060px; } }
+.page.visible { opacity: 1; transform: none; }
+.cover { opacity: 1 !important; transform: none !important; min-height: 100svh; }
+@media (min-width: 1400px) { .page { max-width: min(1060px, 92vw); } }
+@media print {
+  .page { opacity: 1 !important; transform: none !important; box-shadow: none; margin: 0; max-width: 100%; border-radius: 0; }
+  .sticky-nav, #progress-bar { display: none; }
+}
 
 /* ── COVER ── */
 .cover {
@@ -357,15 +366,15 @@ body {
 .step-details li { font-size: 11px; color: var(--text-2); margin-bottom: 3px; }
 
 /* ── SCREENSHOT ── */
-.screenshot-wrap { margin: 20px 0; }
+.screenshot-wrap { margin: 24px 0; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 24px oklch(25% 0.06 264 / 0.1); }
 .screenshot-wrap img {
   width: 100%;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  box-shadow: 0 2px 16px oklch(25% 0.06 264 / 0.1);
   display: block;
+  min-height: 120px;
+  object-fit: cover;
+  object-position: top left;
 }
-.screenshot-caption { font-size: 11px; color: var(--text-3); text-align: center; margin-top: 7px; }
+.screenshot-caption { font-size: 11px; color: var(--text-3); text-align: center; padding: 8px 16px; background: var(--surface); border-top: 1px solid var(--border); }
 
 /* ── STATUS PIPELINE ── */
 .status-pipeline { display: flex; margin: 24px 0; border-radius: 8px; overflow: hidden; }
@@ -533,15 +542,71 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
 .sr-manual { background: var(--man-bg); color: var(--man-c); }
 .sr-citi   { background: var(--green-bg); color: var(--green-text); }
 
-@media print {
-  body { font-size: 12px; background: white; }
-  .page { padding: 38px 50px; max-width: 100%; margin: 0; box-shadow: none; border-radius: 0; }
-  .cover-h1 { font-size: 44px; }
-  .cover-deco { display: none; }
+
+
+/* ── STICKY NAV ── */
+.sticky-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: oklch(11% 0.05 295 / 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  height: 52px;
+  display: flex; align-items: center;
+  padding: 0 clamp(16px, 3vw, 48px);
+  gap: 20px;
+  transform: translateY(-100%);
+  transition: transform 0.22s ease-out;
+  border-bottom: 1px solid oklch(99% 0 0 / 0.08);
 }
+.sticky-nav.show { transform: translateY(0); }
+.nav-logo { display: flex; align-items: center; flex-shrink: 0; }
+.nav-divider { width: 1px; height: 20px; background: oklch(99% 0 0 / 0.18); }
+.nav-section { font-size: 12px; font-weight: 600; color: oklch(99% 0 0 / 0.6); letter-spacing: 0.2px; flex: 1; }
+.nav-links { display: flex; gap: 6px; }
+.nav-link {
+  font-size: 11px; font-weight: 600; color: oklch(99% 0 0 / 0.45);
+  text-decoration: none; padding: 4px 10px; border-radius: 4px;
+  transition: color 0.15s, background 0.15s; white-space: nowrap;
+}
+.nav-link:hover { color: oklch(99% 0 0 / 0.9); background: oklch(99% 0 0 / 0.08); }
+.nav-link.active { color: oklch(99% 0 0); background: var(--blue-500); }
+
+/* ── READING PROGRESS BAR ── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px; z-index: 300;
+  background: linear-gradient(90deg, var(--blue-500), var(--purple-500), var(--magenta-500));
+  width: 0%; transition: width 0.08s linear;
+  pointer-events: none;
+}
+
 </style>
 </head>
 <body>
+<div id="progress-bar"></div>
+
+<nav class="sticky-nav" id="sticky-nav">
+  <div class="nav-logo">
+    <svg width="88" height="24" viewBox="0 0 164 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Atlas HXM">
+      <circle cx="8"  cy="9" r="5.5" fill="#0559FA"/>
+      <circle cx="21" cy="9" r="5.5" fill="#5B27E3"/>
+      <circle cx="34" cy="9" r="5.5" fill="#C840E9"/>
+      <text x="0" y="42" font-family="Nunito,ui-rounded,system-ui,sans-serif" font-size="27" font-weight="900" fill="white" letter-spacing="-0.8">ätlas</text>
+      <text x="108" y="27" font-family="Nunito,ui-rounded,system-ui,sans-serif" font-size="11" font-weight="600" font-style="italic" fill="rgba(255,255,255,0.5)">HXM</text>
+    </svg>
+  </div>
+  <div class="nav-divider"></div>
+  <div class="nav-section" id="nav-section">WorldLink Training</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#section-1">Overview</a>
+    <a class="nav-link" href="#section-2">Process</a>
+    <a class="nav-link" href="#section-3">Automation</a>
+    <a class="nav-link" href="#section-4">Review</a>
+    <a class="nav-link" href="#section-5">Tracking</a>
+    <a class="nav-link" href="#section-6">Errors</a>
+    <a class="nav-link" href="#section-7">FAQ</a>
+  </div>
+</nav>
+
 
 <!-- ═══ PAGE 1: COVER ═══ -->
 <div class="page cover">
@@ -606,7 +671,7 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
 
 
 <!-- ═══ PAGE 3: WHAT & WHY ═══ -->
-<div class="page">
+<div class="page" id="section-1" data-section="What & Why">
   <div class="section-header">
     <div class="section-tag">Section 1</div>
     <h2>What is WorldLink and Why It Matters</h2>
@@ -699,7 +764,7 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
 
 
 <!-- ═══ PAGES 4–5: PROCESS FLOW ═══ -->
-<div class="page">
+<div class="page" id="section-2" data-section="Process Flow">
   <div class="section-header">
     <div class="section-tag">Section 2</div>
     <h2>End-to-End Process Flow</h2>
@@ -778,7 +843,7 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
 
 
 <!-- ═══ PAGE 6: AUTOMATION MAP ═══ -->
-<div class="page">
+<div class="page" id="section-3" data-section="Automation">
   <div class="section-header">
     <div class="section-tag">Section 3</div>
     <h2>What the System Does Automatically</h2>
@@ -853,7 +918,7 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
 
 
 <!-- ═══ PAGE 7: MANUAL STEPS ═══ -->
-<div class="page">
+<div class="page" id="section-4" data-section="Manual Steps">
   <div class="section-header">
     <div class="section-tag">Section 4</div>
     <h2>Manual Review Steps — What You Do</h2>
@@ -910,7 +975,7 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
 
 
 <!-- ═══ PAGE 8: PAYMENT TRACKING ═══ -->
-<div class="page">
+<div class="page" id="section-5" data-section="Payment Tracking">
   <div class="section-header">
     <div class="section-tag">Section 5</div>
     <h2>Payment Tracking — Status by Status</h2>
@@ -1031,7 +1096,7 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
 
 
 <!-- ═══ PAGE 9: ERRORS & FLAGS ═══ -->
-<div class="page">
+<div class="page" id="section-6" data-section="Errors & Flags">
   <div class="section-header">
     <div class="section-tag">Section 6</div>
     <h2>Handling Data Errors and Flags</h2>
@@ -1094,7 +1159,7 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
 
 
 <!-- ═══ PAGE 10: FAQ WSEs ═══ -->
-<div class="page">
+<div class="page" id="section-7" data-section="FAQ — WSEs">
   <div class="section-header">
     <div class="section-tag">Section 7</div>
     <h2>FAQ — Questions from WSEs</h2>
@@ -1119,7 +1184,7 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
 
 
 <!-- ═══ PAGE 11: FAQ CLIENTS ═══ -->
-<div class="page">
+<div class="page" id="section-8" data-section="FAQ — Clients">
   <div class="section-header">
     <div class="section-tag">Section 8</div>
     <h2>FAQ — Questions from Clients</h2>
@@ -1146,7 +1211,7 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
 
 
 <!-- ═══ PAGE 12: QUICK REFERENCE ═══ -->
-<div class="page">
+<div class="page" id="section-9" data-section="Quick Reference">
   <div class="section-header">
     <div class="section-tag">Section 9</div>
     <h2>Quick Reference Card</h2>
@@ -1228,5 +1293,48 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
   </div>
 </div>
 
+
+<script>
+(function() {
+  const progressBar = document.getElementById('progress-bar');
+  const stickyNav   = document.getElementById('sticky-nav');
+  const navSection  = document.getElementById('nav-section');
+  const cover       = document.querySelector('.cover');
+  const pages       = document.querySelectorAll('.page:not(.cover)');
+  const navLinks    = document.querySelectorAll('.nav-link');
+
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.04 });
+  pages.forEach(p => io.observe(p));
+
+  // Section detection
+  const sections = Array.from(document.querySelectorAll('[data-section]'));
+  const sectionIo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const label = e.target.dataset.section;
+        if (navSection) navSection.textContent = label;
+        const id = e.target.id;
+        navLinks.forEach(l => {
+          l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => sectionIo.observe(s));
+
+  // Progress + sticky nav show/hide
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = Math.min(100, (scrollTop / docHeight) * 100) + '%';
+
+    const coverBottom = cover ? cover.getBoundingClientRect().bottom : 0;
+    stickyNav.classList.toggle('show', coverBottom < -20);
+  }, { passive: true });
+})();
+</script>
 </body>
 </html>
