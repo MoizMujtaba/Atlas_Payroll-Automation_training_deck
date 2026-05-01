@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorldLink Payment Automation — Training Guide</title>
+<style>
+/* ── ATLAS HXM BRAND TOKENS ── */
+:root {
+  /* Atlas brand */
+  --atlas-blue:    oklch(52% 0.22 264);
+  --atlas-blue-dk: oklch(38% 0.2 264);
+  --atlas-blue-lt: oklch(95% 0.05 264);
+  --atlas-blue-md: oklch(72% 0.14 264);
+
+  /* Surfaces */
+  --bg:        oklch(99% 0.003 264);
+  --surface:   oklch(97% 0.005 264);
+  --surface-2: oklch(95% 0.007 264);
+  --border:    oklch(91% 0.007 264);
+  --border-md: oklch(84% 0.01 264);
+
+  /* Text */
+  --text:    oklch(17% 0.015 264);
+  --text-2:  oklch(42% 0.01 264);
+  --text-3:  oklch(62% 0.007 264);
+  --text-inv: oklch(99% 0.003 264);
+
+  /* Semantic */
+  --green:      oklch(50% 0.15 155);
+  --green-bg:   oklch(96% 0.04 155);
+  --green-bd:   oklch(78% 0.09 155);
+  --green-text: oklch(30% 0.12 155);
+
+  --amber:      oklch(68% 0.15 70);
+  --amber-bg:   oklch(97% 0.04 85);
+  --amber-bd:   oklch(82% 0.1 70);
+  --amber-text: oklch(36% 0.12 60);
+
+  --red:      oklch(52% 0.17 25);
+  --red-bg:   oklch(97.5% 0.025 25);
+  --red-bd:   oklch(80% 0.11 25);
+  --red-text: oklch(33% 0.14 20);
+
+  --purple:      oklch(48% 0.15 295);
+  --purple-bg:   oklch(96.5% 0.04 295);
+  --purple-bd:   oklch(78% 0.09 295);
+  --purple-text: oklch(30% 0.13 295);
+
+  /* Step types */
+  --auto-c:  var(--atlas-blue);
+  --auto-bg: var(--atlas-blue-lt);
+  --man-c:   var(--amber-text);
+  --man-bg:  var(--amber-bg);
+  --rev-c:   var(--purple-text);
+  --rev-bg:  var(--purple-bg);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: var(--text);
+  background: oklch(93% 0.008 264);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── PAGES ── */
+.page {
+  page-break-after: always;
+  padding: 52px 64px;
+  min-height: 100vh;
+  background: var(--bg);
+  max-width: 980px;
+  margin: 28px auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 28px oklch(25% 0.06 264 / 0.13);
+}
+.page:last-child { page-break-after: avoid; }
+@media (min-width: 1200px) { html { font-size: 17px; } }
+@media (min-width: 1600px) { html { font-size: 18px; } .page { max-width: 1060px; } }
+
+/* ── ATLAS LOGO SVG ── */
+.atlas-logo { display: flex; align-items: center; gap: 0; }
+
+/* ── COVER ── */
+.cover {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  min-height: 100vh;
+}
+.cover-header {
+  background: var(--atlas-blue);
+  padding: 16px 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cover-header-brand { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: oklch(99% 0 0 / 0.65); }
+.cover-header-type  { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: oklch(99% 0 0 / 0.45); }
+
+.cover-body {
+  flex: 1;
+  padding: 60px 64px 52px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+/* Cover background decoration — grid lines */
+.cover-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--border) 0, var(--border) 1px, transparent 1px, transparent 52px),
+    repeating-linear-gradient(0deg,  var(--border) 0, var(--border) 1px, transparent 1px, transparent 52px);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.cover-logo-wrap { margin-bottom: 56px; }
+.cover-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--atlas-blue); margin-bottom: 16px; }
+.cover-h1 {
+  font-size: 58px;
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--text);
+  letter-spacing: -2px;
+  margin-bottom: 20px;
+  max-width: 620px;
+}
+.cover-h1 em { font-style: normal; color: var(--atlas-blue); }
+.cover-sub { font-size: 15px; color: var(--text-2); max-width: 500px; line-height: 1.7; margin-bottom: 32px; }
+.cover-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: auto; }
+.cover-tag { font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 4px; background: var(--atlas-blue-lt); color: var(--atlas-blue); }
+.cover-meta {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.cover-meta-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+.cover-meta-value { font-size: 14px; font-weight: 600; color: var(--text); }
+
+/* Decorative large text */
+.cover-deco {
+  position: absolute;
+  right: -10px; bottom: 40px;
+  font-size: 260px; font-weight: 900;
+  letter-spacing: -14px;
+  color: var(--atlas-blue-lt);
+  line-height: 1;
+  pointer-events: none; user-select: none; z-index: 0;
+}
+
+/* ── SECTION HEADERS ── */
+.section-header { margin-bottom: 32px; }
+.section-tag { font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--atlas-blue); margin-bottom: 7px; }
+.section-header h2 { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.4px; line-height: 1.2; margin-bottom: 6px; }
+.section-header p { font-size: 13px; color: var(--text-2); max-width: 600px; }
+
+/* ── TOC ── */
+.toc-item {
+  display: grid; grid-template-columns: 36px 1fr auto;
+  align-items: start; gap: 16px;
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+.toc-item:last-child { border-bottom: none; }
+.toc-number { width: 36px; height: 36px; border-radius: 8px; background: var(--atlas-blue-lt); color: var(--atlas-blue); font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.toc-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.toc-desc  { font-size: 12px; color: var(--text-3); }
+.toc-page  { font-size: 13px; color: var(--text-3); font-weight: 500; padding-top: 2px; }
+
+/* ── CALLOUTS — zero border-left ── */
+.callout { border-radius: 10px; padding: 16px 20px; margin: 18px 0; }
+.callout-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.callout-icon  { font-size: 15px; line-height: 1; }
+.callout-title { font-weight: 700; font-size: 12px; letter-spacing: 0.2px; }
+.callout-body  { font-size: 13px; line-height: 1.6; }
+.callout.info    { background: var(--atlas-blue-lt); }
+.callout.info    .callout-title { color: var(--atlas-blue-dk); }
+.callout.info    .callout-body  { color: var(--atlas-blue); opacity: .9; }
+.callout.warning { background: var(--amber-bg); }
+.callout.warning .callout-title { color: var(--amber-text); }
+.callout.warning .callout-body  { color: var(--amber-text); opacity: .85; }
+.callout.success { background: var(--green-bg); }
+.callout.success .callout-title { color: var(--green-text); }
+.callout.success .callout-body  { color: var(--green-text); opacity: .85; }
+
+/* ── TIMING INFOGRAPHIC ── */
+.timing-infographic {
+  margin: 24px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.timing-panel { padding: 30px 32px; }
+.timing-panel.before { background: oklch(97% 0.01 264); }
+.timing-panel.after  { background: var(--atlas-blue); color: var(--text-inv); }
+.timing-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+.timing-panel.before .timing-eyebrow { color: var(--text-3); }
+.timing-panel.after  .timing-eyebrow { color: oklch(99% 0 0 / 0.6); }
+.timing-big { font-size: 64px; font-weight: 900; line-height: 1; letter-spacing: -3px; margin-bottom: 6px; }
+.timing-panel.before .timing-big { color: var(--text-3); }
+.timing-panel.after  .timing-big { color: oklch(99% 0 0); }
+.timing-unit { font-size: 14px; font-weight: 500; margin-bottom: 20px; }
+.timing-panel.before .timing-unit { color: var(--text-3); }
+.timing-panel.after  .timing-unit { color: oklch(99% 0 0 / 0.75); }
+.timing-steps { display: flex; flex-direction: column; gap: 4px; }
+.timing-step { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+.timing-panel.before .timing-step { color: var(--text-3); }
+.timing-panel.after  .timing-step { color: oklch(99% 0 0 / 0.8); }
+.timing-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.timing-panel.before .timing-dot { background: var(--text-3); }
+.timing-panel.after  .timing-dot { background: oklch(99% 0 0 / 0.5); }
+.timing-arrow {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--atlas-blue-lt);
+  writing-mode: horizontal-tb;
+  position: relative;
+}
+.timing-arrow-inner {
+  background: var(--atlas-blue);
+  color: white;
+  font-size: 11px; font-weight: 700;
+  padding: 8px 10px;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* ── PROCESS FLOW ── */
+.process-flow { margin: 24px 0; }
+.process-step { display: flex; gap: 16px; margin-bottom: 4px; position: relative; }
+.process-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 17px; top: 40px;
+  width: 2px; height: calc(100% - 4px);
+  background: var(--border);
+}
+.step-indicator {
+  flex-shrink: 0; width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13px;
+  position: relative; z-index: 1;
+}
+.step-auto   { background: var(--auto-bg); color: var(--auto-c); outline: 2px solid oklch(86% 0.08 264); outline-offset: 1px; }
+.step-manual { background: var(--man-bg);  color: var(--man-c);  outline: 2px solid oklch(88% 0.07 70);  outline-offset: 1px; }
+.step-both   { background: var(--rev-bg);  color: var(--rev-c);  outline: 2px solid oklch(86% 0.07 295); outline-offset: 1px; }
+.step-content { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px 20px; margin-bottom: 10px; }
+.step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; flex-wrap: wrap; }
+.step-title { font-weight: 700; font-size: 13px; color: var(--text); }
+.step-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; }
+.badge-auto   { background: var(--auto-bg); color: var(--auto-c); }
+.badge-manual { background: var(--man-bg);  color: var(--man-c); }
+.badge-review { background: var(--rev-bg);  color: var(--rev-c); }
+.step-desc { font-size: 12px; color: var(--text-2); line-height: 1.6; }
+.step-details { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+.step-details ul { padding-left: 15px; }
+.step-details li { font-size: 11px; color: var(--text-2); margin-bottom: 3px; }
+
+/* ── SCREENSHOT ── */
+.screenshot-wrap { margin: 20px 0; }
+.screenshot-wrap img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 16px oklch(25% 0.06 264 / 0.1);
+  display: block;
+}
+.screenshot-caption { font-size: 11px; color: var(--text-3); text-align: center; margin-top: 7px; }
+
+/* ── STATUS PIPELINE ── */
+.status-pipeline { display: flex; margin: 24px 0; border-radius: 8px; overflow: hidden; }
+.status-node { flex: 1; text-align: center; padding: 13px 4px; font-size: 10px; font-weight: 600; position: relative; color: var(--text-inv); min-width: 70px; line-height: 1.3; }
+.status-node:not(:last-child)::after {
+  content: ''; position: absolute; right: -9px; top: 50%; transform: translateY(-50%);
+  border-left: 9px solid transparent;
+  border-top: 19px solid transparent;
+  border-bottom: 19px solid transparent;
+  z-index: 2;
+}
+.s-draft    { background: oklch(55% 0.04 264); }
+.s-draft::after    { border-left-color: oklch(55% 0.04 264); }
+.s-submit   { background: oklch(46% 0.06 264); }
+.s-submit::after   { border-left-color: oklch(46% 0.06 264); }
+.s-auth     { background: oklch(38% 0.08 264); }
+.s-auth::after     { border-left-color: oklch(38% 0.08 264); }
+.s-auto     { background: var(--atlas-blue); }
+.s-auto::after     { border-left-color: var(--atlas-blue); }
+.s-accepted { background: oklch(46% 0.2 264); }
+.s-accepted::after { border-left-color: oklch(46% 0.2 264); }
+.s-settled  { background: var(--green); }
+.status-sub { font-size: 9px; opacity: 0.6; margin-top: 2px; }
+
+/* ── LEGEND ── */
+.legend { display: flex; gap: 20px; flex-wrap: wrap; margin: 0 0 24px; padding: 11px 16px; background: var(--surface); border-radius: 8px; border: 1px solid var(--border); }
+.legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text-2); }
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.dot-auto   { background: var(--auto-c); }
+.dot-manual { background: var(--man-c); }
+.dot-review { background: var(--rev-c); }
+
+/* ── TABLES ── */
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 20px 0; }
+th { background: var(--text); color: var(--text-inv); padding: 10px 16px; text-align: left; font-weight: 600; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; }
+th:first-child { border-radius: 8px 0 0 0; }
+th:last-child  { border-radius: 0 8px 0 0; }
+td { padding: 10px 16px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-2); font-size: 13px; }
+tr:hover td { background: var(--surface); }
+tr:last-child td { border-bottom: none; }
+.td-auto   { color: var(--auto-c); font-weight: 600; font-size: 11px; text-transform: uppercase; }
+.td-manual { color: var(--man-c);  font-weight: 600; font-size: 11px; text-transform: uppercase; }
+
+/* ── AUTOMATION TABLE — colored first col ── */
+.auto-table td:first-child { font-weight: 600; color: var(--text); font-size: 13px; }
+
+/* ── FAQ ── */
+.faq-item { border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
+.faq-q { background: var(--surface); padding: 12px 18px; font-weight: 600; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border); display: flex; gap: 10px; }
+.faq-q-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--atlas-blue); flex-shrink: 0; margin-top: 2px; text-transform: uppercase; }
+.faq-a { padding: 12px 18px; font-size: 13px; color: var(--text-2); line-height: 1.65; }
+.faq-a strong { color: var(--text); }
+
+/* ── AUDIENCE PILLS ── */
+.audience-header { display: flex; gap: 10px; margin-bottom: 18px; }
+.audience-pill { padding: 5px 14px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+.pill-wse    { background: var(--green-bg); color: var(--green-text); }
+.pill-client { background: var(--purple-bg); color: var(--purple-text); }
+
+/* ── FLAG BLOCKS ── */
+.flag-block { border-radius: 10px; padding: 20px 22px; margin-bottom: 16px; }
+.flag-block.err   { background: var(--red-bg); }
+.flag-block.warn  { background: var(--amber-bg); }
+.flag-block.suppl { background: var(--purple-bg); }
+.flag-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.flag-icon { font-size: 17px; }
+.flag-title { font-weight: 700; font-size: 13px; }
+.flag-block.err   .flag-title { color: var(--red-text); }
+.flag-block.warn  .flag-title { color: var(--amber-text); }
+.flag-block.suppl .flag-title { color: var(--purple-text); }
+.flag-desc { font-size: 12px; margin-bottom: 10px; line-height: 1.55; }
+.flag-block.err   .flag-desc { color: var(--red-text); opacity: .8; }
+.flag-block.warn  .flag-desc { color: var(--amber-text); opacity: .8; }
+.flag-block.suppl .flag-desc { color: var(--purple-text); opacity: .8; }
+.flag-examples { font-size: 12px; font-weight: 600; }
+.flag-block.err   .flag-examples { color: var(--red-text); }
+.flag-block.warn  .flag-examples { color: var(--amber-text); }
+.flag-block.suppl .flag-examples { color: var(--purple-text); }
+.flag-examples ul { padding-left: 15px; margin-top: 3px; font-weight: 400; line-height: 1.6; }
+.flag-action { margin-top: 12px; padding: 10px 14px; background: oklch(100% 0 0 / 0.52); border-radius: 7px; font-size: 12px; line-height: 1.55; }
+.flag-block.err   .flag-action { color: var(--red-text); }
+.flag-block.warn  .flag-action { color: var(--amber-text); }
+.flag-block.suppl .flag-action { color: var(--purple-text); }
+.flag-action strong { display: block; margin-bottom: 2px; }
+
+/* ── MANUAL STEPS ── */
+.manual-step { padding: 18px 20px; border-radius: 10px; margin-bottom: 12px; }
+.manual-step.payops  { background: var(--surface); border: 1px solid var(--border); }
+.manual-step.treasury { background: var(--amber-bg); border: 1px solid var(--amber-bd); }
+.manual-step-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 12px; }
+.manual-step-title { font-weight: 700; font-size: 13px; color: var(--text); }
+.manual-step.treasury .manual-step-title { color: var(--amber-text); }
+.role-tag { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; flex-shrink: 0; }
+.role-payops  { background: var(--auto-bg); color: var(--auto-c); }
+.role-treasury { background: var(--man-bg); color: var(--man-c); }
+.manual-step-desc { font-size: 12px; color: var(--text-2); margin-bottom: 10px; line-height: 1.6; }
+.manual-step.treasury .manual-step-desc { color: var(--amber-text); opacity: .85; }
+ul.checklist { list-style: none; padding: 0; }
+ul.checklist li { padding: 4px 0 4px 18px; font-size: 12px; color: var(--text-2); position: relative; }
+ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+
+/* ── QUICK REFERENCE ── */
+.qr-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.qr-card { background: var(--surface); border-radius: 10px; padding: 18px 20px; }
+.qr-card h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--atlas-blue); margin-bottom: 12px; }
+.qr-list { list-style: none; padding: 0; counter-reset: qr; }
+.qr-list li { font-size: 12px; color: var(--text-2); padding: 4px 0 4px 18px; position: relative; border-bottom: 1px solid var(--border); counter-increment: qr; }
+.qr-list li:last-child { border-bottom: none; }
+.qr-list li::before { content: counter(qr); position: absolute; left: 0; font-size: 10px; font-weight: 700; color: var(--atlas-blue); top: 5px; }
+.terms-grid { display: grid; grid-template-columns: auto 1fr; }
+.term-key { font-size: 12px; font-weight: 600; color: var(--text); padding: 6px 12px 6px 0; border-bottom: 1px solid var(--border); }
+.term-val { font-size: 12px; color: var(--text-2); padding: 6px 0; border-bottom: 1px solid var(--border); }
+.terms-grid > *:nth-last-child(-n+2) { border-bottom: none; }
+
+/* ── MISC ── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.footer-note { font-size: 11px; color: var(--text-3); text-align: center; margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--border); }
+
+/* ── INFOGRAPHIC: BEFORE/AFTER FLOW ── */
+.flow-infographic {
+  margin: 24px 0;
+  display: grid;
+  grid-template-columns: 1fr 32px 1fr;
+  gap: 0;
+  align-items: start;
+}
+.flow-col { }
+.flow-col-header { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 10px 0 10px; margin-bottom: 8px; }
+.flow-col.old .flow-col-header { color: var(--text-3); border-bottom: 2px solid var(--border); }
+.flow-col.new .flow-col-header { color: var(--atlas-blue); border-bottom: 2px solid var(--atlas-blue); }
+.flow-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+.flow-col.old .flow-item { background: var(--surface); color: var(--text-2); }
+.flow-col.new .flow-item { background: var(--atlas-blue-lt); color: var(--atlas-blue-dk); }
+.flow-item-num { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+.flow-col.old .flow-item-num { background: var(--border-md); color: var(--text-3); }
+.flow-col.new .flow-item-num { background: var(--atlas-blue); color: white; }
+.flow-item-label { flex: 1; font-weight: 500; }
+.flow-item.eliminated { opacity: 0.4; text-decoration: line-through; }
+.flow-divider-col { display: flex; align-items: center; justify-content: center; padding-top: 52px; }
+.flow-vs { font-size: 11px; font-weight: 700; color: var(--text-3); background: var(--surface); border: 1px solid var(--border); border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; }
+
+/* ── INFOGRAPHIC: STATUS DETAIL TABLE ── */
+.status-detail { margin: 20px 0; }
+.status-row {
+  display: grid;
+  grid-template-columns: 130px 100px 1fr 160px;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+.status-row.header { background: var(--text); border-radius: 8px 8px 0 0; }
+.status-row.header .sr-cell { color: var(--text-inv); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; padding: 10px 14px; }
+.sr-cell { padding: 10px 14px; font-size: 12px; color: var(--text-2); vertical-align: top; }
+.status-row:hover .sr-cell { background: var(--surface); }
+.status-row:last-child { border-bottom: none; border-radius: 0 0 8px 8px; overflow: hidden; }
+.sr-status { font-weight: 700; color: var(--text); font-size: 12px; }
+.sr-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+.sr-auto   { background: var(--auto-bg); color: var(--auto-c); }
+.sr-manual { background: var(--man-bg); color: var(--man-c); }
+.sr-citi   { background: var(--green-bg); color: var(--green-text); }
+
+@media print {
+  body { font-size: 12px; background: white; }
+  .page { padding: 38px 50px; max-width: 100%; margin: 0; box-shadow: none; border-radius: 0; }
+  .cover-h1 { font-size: 44px; }
+  .cover-deco { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ PAGE 1: COVER ═══ -->
+<div class="page cover">
+  <div class="cover-header">
+    <div class="cover-header-brand">Atlas HXM</div>
+    <div class="cover-header-type">Internal Training Document</div>
+  </div>
+  <div class="cover-body">
+
+    <!-- Atlas HXM Logo -->
+    <div class="cover-logo-wrap">
+      <svg width="140" height="34" viewBox="0 0 140 34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Atlas HXM">
+        <!-- Dot cluster -->
+        <circle cx="9"  cy="7"  r="4.5" fill="#7C3AED"/>
+        <circle cx="17" cy="3"  r="4.5" fill="#EC4899"/>
+        <circle cx="25" cy="7"  r="4.5" fill="#06B6D4"/>
+        <circle cx="17" cy="12" r="4"   fill="#F59E0B"/>
+        <!-- "atlas" text -->
+        <text x="35" y="24" font-family="system-ui,-apple-system,sans-serif" font-size="22" font-weight="800" fill="#111827" letter-spacing="-0.5">atlas</text>
+        <!-- "HXM" superscript -->
+        <text x="112" y="14" font-family="system-ui,-apple-system,sans-serif" font-size="10" font-weight="700" fill="#6B7280" letter-spacing="0.5">HXM</text>
+      </svg>
+    </div>
+
+    <div class="cover-eyebrow">Payment Systems — Training Guide</div>
+    <h1 class="cover-h1">WorldLink<br><em>Payment</em><br>Automation</h1>
+    <p class="cover-sub">Process flows, automation steps, manual touchpoints, payment tracking, and handling questions from WSEs and clients.</p>
+    <div class="cover-tags">
+      <span class="cover-tag">Payroll Operations</span>
+      <span class="cover-tag">Client Success</span>
+    </div>
+
+    <div class="cover-meta">
+      <div><div class="cover-meta-label">Version</div><div class="cover-meta-value">1.0 — May 2026</div></div>
+      <div><div class="cover-meta-label">First Go-Live</div><div class="cover-meta-value">Finland — May 15, 2026</div></div>
+      <div><div class="cover-meta-label">Countries in Scope</div><div class="cover-meta-value">57 via Citi WorldLink</div></div>
+      <div><div class="cover-meta-label">Owner</div><div class="cover-meta-value">Payments & Platform Team</div></div>
+    </div>
+  </div>
+  <div class="cover-deco" aria-hidden="true">WL</div>
+</div>
+
+
+<!-- ═══ PAGE 2: TABLE OF CONTENTS ═══ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-tag">Navigation</div>
+    <h2>Table of Contents</h2>
+  </div>
+  <div class="toc-item"><div class="toc-number">1</div><div><div class="toc-title">What is WorldLink and Why It Matters</div><div class="toc-desc">Context, before vs. after, and the value of automation</div></div><div class="toc-page">3</div></div>
+  <div class="toc-item"><div class="toc-number">2</div><div><div class="toc-title">End-to-End Process Flow</div><div class="toc-desc">Step-by-step: from G2N data to settled payment</div></div><div class="toc-page">4</div></div>
+  <div class="toc-item"><div class="toc-number">3</div><div><div class="toc-title">What the System Does Automatically</div><div class="toc-desc">Automation map — no human action required</div></div><div class="toc-page">6</div></div>
+  <div class="toc-item"><div class="toc-number">4</div><div><div class="toc-title">Manual Review Steps — What You Do</div><div class="toc-desc">Payroll Ops touchpoints, controls, and override actions</div></div><div class="toc-page">7</div></div>
+  <div class="toc-item"><div class="toc-number">5</div><div><div class="toc-title">Payment Tracking — Status by Status</div><div class="toc-desc">How to read the Payment Tracking tab from submission to settlement</div></div><div class="toc-page">8</div></div>
+  <div class="toc-item"><div class="toc-number">6</div><div><div class="toc-title">Handling Data Errors and Flags</div><div class="toc-desc">Hard blocks, soft warnings, and what to do</div></div><div class="toc-page">9</div></div>
+  <div class="toc-item"><div class="toc-number">7</div><div><div class="toc-title">FAQ — Questions from WSEs</div><div class="toc-desc">What workers typically ask about their payments</div></div><div class="toc-page">10</div></div>
+  <div class="toc-item"><div class="toc-number">8</div><div><div class="toc-title">FAQ — Questions from Clients</div><div class="toc-desc">What HR managers and client admins typically ask</div></div><div class="toc-page">11</div></div>
+  <div class="toc-item"><div class="toc-number">9</div><div><div class="toc-title">Quick Reference Card</div><div class="toc-desc">Contacts, escalation path, and key terms</div></div><div class="toc-page">12</div></div>
+</div>
+
+
+<!-- ═══ PAGE 3: WHAT & WHY ═══ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-tag">Section 1</div>
+    <h2>What is WorldLink and Why It Matters</h2>
+    <p>The shift from manual, multi-intermediary payroll disbursement to direct, automated wire transfers via Citi.</p>
+  </div>
+
+  <!-- Before / After flow infographic -->
+  <div class="flow-infographic">
+    <div class="flow-col old">
+      <div class="flow-col-header">Before WorldLink — T+5 days</div>
+      <div class="flow-item"><div class="flow-item-num">1</div><div class="flow-item-label">Manual G2N export from LPP</div></div>
+      <div class="flow-item"><div class="flow-item-num">2</div><div class="flow-item-label">Payroll Ops initiates transfer manually</div></div>
+      <div class="flow-item"><div class="flow-item-num">3</div><div class="flow-item-label">Transfermate processes as intermediary</div></div>
+      <div class="flow-item"><div class="flow-item-num">4</div><div class="flow-item-label">Citi receives and processes</div></div>
+      <div class="flow-item"><div class="flow-item-num">5</div><div class="flow-item-label">Employee receives payment</div></div>
+    </div>
+    <div class="flow-divider-col"><div class="flow-vs">→</div></div>
+    <div class="flow-col new">
+      <div class="flow-col-header">With WorldLink — T+2 days</div>
+      <div class="flow-item"><div class="flow-item-num">1</div><div class="flow-item-label">G2N auto-synced from Fabric to Atlas</div></div>
+      <div class="flow-item"><div class="flow-item-num">2</div><div class="flow-item-label">Payroll Ops reviews and authorizes in Atlas</div></div>
+      <div class="flow-item"><div class="flow-item-num">3</div><div class="flow-item-label">Direct Citi WorldLink wire — no intermediary</div></div>
+      <div class="flow-item"><div class="flow-item-num">4</div><div class="flow-item-label">Employee receives payment</div></div>
+    </div>
+  </div>
+
+  <!-- Big T+5 → T+2 panel -->
+  <div class="timing-infographic">
+    <div class="timing-panel before">
+      <div class="timing-eyebrow">Before WorldLink</div>
+      <div class="timing-big">T+5</div>
+      <div class="timing-unit">business days to settlement</div>
+      <div class="timing-steps">
+        <div class="timing-step"><div class="timing-dot"></div>Manual G2N extraction required</div>
+        <div class="timing-step"><div class="timing-dot"></div>Transfermate adds 1–2 days</div>
+        <div class="timing-step"><div class="timing-dot"></div>Email reconciliation with Citi</div>
+      </div>
+    </div>
+    <div class="timing-panel after">
+      <div class="timing-eyebrow">With WorldLink</div>
+      <div class="timing-big">T+2</div>
+      <div class="timing-unit">business days to settlement</div>
+      <div class="timing-steps">
+        <div class="timing-step"><div class="timing-dot"></div>Auto-synced G2N from Fabric</div>
+        <div class="timing-step"><div class="timing-dot"></div>Direct Citi wire — zero intermediary</div>
+        <div class="timing-step"><div class="timing-dot"></div>Real-time tracking inside Atlas</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-eyebrow"><span class="callout-icon">⚠️</span><span class="callout-title">Phase 1 scope (May 2026)</span></div>
+    <div class="callout-body">Phase 1 covers wire transfers in 57 countries via Citi WorldLink. Finland goes live May 15. SEPA (faster, lower cost for SEPA-zone countries) is Phase 2 and will follow later this year.</div>
+  </div>
+
+  <!-- Screenshot 1: Country Funding overview -->
+  <div class="screenshot-wrap">
+    <img src="atlas-ss-1.png" alt="Atlas Payments page — Country Funding tab showing batches by country" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div style="display:none;border:1.5px dashed var(--border-md);border-radius:8px;background:var(--surface);height:160px;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:var(--text-3);font-size:13px;">
+      <span style="font-size:24px">🖼️</span>
+      <span>Save <strong style="color:var(--text-2)">atlas-ss-1.png</strong> to Desktop to show screenshot</span>
+    </div>
+    <div class="screenshot-caption">Atlas Payments — Country Funding tab. Batches across 57 countries with funding status, batch references, and totals.</div>
+  </div>
+</div>
+
+
+<!-- ═══ PAGES 4–5: PROCESS FLOW ═══ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-tag">Section 2</div>
+    <h2>End-to-End Process Flow</h2>
+    <p>From payroll close to employee payment — every step in sequence.</p>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot dot-auto"></div>Fully automated — system handles this</div>
+    <div class="legend-item"><div class="legend-dot dot-manual"></div>Manual — Payroll Ops or Treasury action required</div>
+    <div class="legend-item"><div class="legend-dot dot-review"></div>Review — system generates, human validates</div>
+  </div>
+
+  <div class="process-flow">
+
+    <div class="process-step">
+      <div class="step-indicator step-auto">1</div>
+      <div class="step-content">
+        <div class="step-header"><span class="step-title">G2N Data Sync — Fabric to Atlas</span><span class="step-badge badge-auto">Automated</span></div>
+        <div class="step-desc">Gross-to-net payroll data is pushed from Fabric (LPP) into Atlas on every page refresh. WSE names, net pay amounts, bank details, and country are populated automatically.</div>
+        <div class="step-details"><ul><li>No manual export or file upload needed</li><li>Data updates in real time as Fabric pushes changes</li><li>System detects new or changed records automatically</li></ul></div>
+      </div>
+    </div>
+
+    <div class="process-step">
+      <div class="step-indicator step-both">2</div>
+      <div class="step-content">
+        <div class="step-header"><span class="step-title">Review Payments — Payroll Ops Validates</span><span class="step-badge badge-review">Review Required</span></div>
+        <div class="step-desc">Payroll Ops opens the Payments page, selects the country, and reviews the employee table. The system has already populated all rows with G2N data.</div>
+        <div class="step-details"><ul><li>Red "Data Error" badge — cannot submit until resolved at source</li><li>Amber warning — requires manual acknowledgement before submitting</li><li>Supplementary rows — must classify before submission</li></ul></div>
+      </div>
+    </div>
+
+    <div class="process-step">
+      <div class="step-indicator step-manual">3</div>
+      <div class="step-content">
+        <div class="step-header"><span class="step-title">Submit for Disbursement — Payroll Ops Submits</span><span class="step-badge badge-manual">Manual Action</span></div>
+        <div class="step-desc">Select valid rows and click "Submit for Disbursement." Confirmation bar shows count and total. Confirm to lock rows and notify Treasury.</div>
+        <div class="step-details"><ul><li>Submit disabled if selected row has missing net pay</li><li>Multi-currency batches shown separately (EUR 4,250 · USD 3,200)</li><li>Rows locked and logged after confirmation — cannot be edited</li></ul></div>
+      </div>
+    </div>
+
+    <div class="process-step">
+      <div class="step-indicator step-auto">4</div>
+      <div class="step-content">
+        <div class="step-header"><span class="step-title">Pre-flight Balance Check — System Validates</span><span class="step-badge badge-auto">Automated</span></div>
+        <div class="step-desc">System queries the Citi treasury account balance and validates available funds ≥ total payroll × 1.10 (10% safety buffer). Alert fires if funds are short before any payment is sent.</div>
+      </div>
+    </div>
+
+    <div class="process-step">
+      <div class="step-indicator step-manual">5</div>
+      <div class="step-content">
+        <div class="step-header"><span class="step-title">Treasury Authorization — Disburse Salaries Tab</span><span class="step-badge badge-manual">Manual Action</span></div>
+        <div class="step-desc">Treasury reviews submitted payments in the Disburse Salaries tab and authorizes the batch. The system then generates the wire instruction and sends it to Citi WorldLink automatically.</div>
+      </div>
+    </div>
+
+    <div class="process-step">
+      <div class="step-indicator step-auto">6</div>
+      <div class="step-content">
+        <div class="step-header"><span class="step-title">Wire Sent to Citi WorldLink</span><span class="step-badge badge-auto">Automated</span></div>
+        <div class="step-desc">System sends the wire instruction to Citi WorldLink. Citi acknowledges receipt and begins processing. Status updates to "Wire Sent" → "Instruction Accepted" automatically.</div>
+      </div>
+    </div>
+
+    <div class="process-step">
+      <div class="step-indicator step-auto">7</div>
+      <div class="step-content">
+        <div class="step-header"><span class="step-title">Settlement — Employee Receives Payment</span><span class="step-badge badge-auto">Automated</span></div>
+        <div class="step-desc">Citi settles the wire in T+2 business days. Status updates to "Settled" in the Payment Tracking tab. No further action needed.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══ PAGE 6: AUTOMATION MAP ═══ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-tag">Section 3</div>
+    <h2>What the System Does Automatically</h2>
+    <p>No human action required for these steps — Atlas and Citi handle them end to end.</p>
+  </div>
+
+  <table class="auto-table">
+    <thead><tr><th style="width:30%">What the system does</th><th style="width:40%">How it works</th><th style="width:30%">What you see in Atlas</th></tr></thead>
+    <tbody>
+      <tr><td>G2N data pull from Fabric</td><td>On page load, Atlas queries Fabric DB and populates the Review Payments table with current payroll data</td><td>Employee rows pre-filled with name, net pay, bank details, country</td></tr>
+      <tr><td>Data error detection</td><td>System checks each row for missing net pay, duplicate records, or invalid fields. Hard blocks flagged automatically</td><td>Red "Data Error" badge on affected rows; checkbox disabled</td></tr>
+      <tr><td>Anomaly detection</td><td>System flags rows where net pay is zero, or varies more than the configured threshold from prior run</td><td>Amber ⚠ icon next to net pay; acknowledgement checkbox appears</td></tr>
+      <tr><td>Supplementary payment detection</td><td>If Fabric pushes new data for an already-wired employee, system creates a supplementary row with "Unclassified" badge</td><td>"Supplementary" badge + classification dropdown on the new row</td></tr>
+      <tr><td>Treasury notification</td><td>On submission by Payroll Ops, system sends in-app and email notification to Treasury that a batch is ready</td><td>Treasury sees notification; rows appear in Disburse Salaries tab</td></tr>
+      <tr><td>Pre-flight balance check</td><td>Before authorization, system queries Citi for available balance and validates 10% buffer. Alert fires if funds are short</td><td>Balance check result shown in Disburse Salaries tab</td></tr>
+      <tr><td>Wire instruction generation</td><td>On Treasury authorization, system constructs and sends the wire payload to Citi WorldLink — no manual file upload</td><td>Status moves to "Wire Sent" automatically</td></tr>
+      <tr><td>Status polling from Citi</td><td>System continuously polls Citi for status updates and reflects them in Payment Tracking in real time</td><td>Status progresses: Submitted → Authorized → Wire Sent → Accepted → Settled</td></tr>
+      <tr><td>Audit logging</td><td>Every action (submit, authorize, classify) written to Payroll Edit Log with actor, timestamp, and details</td><td>Full audit trail visible in edit log — no manual recording needed</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout success">
+    <div class="callout-eyebrow"><span class="callout-icon">✅</span><span class="callout-title">What this eliminates</span></div>
+    <div class="callout-body">Manual G2N export from LPP, sending payment files to Transfermate, tracking payment status via email with Citi, and manual reconciliation spreadsheets. The only human touchpoints are review and authorization.</div>
+  </div>
+</div>
+
+
+<!-- ═══ PAGE 7: MANUAL STEPS ═══ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-tag">Section 4</div>
+    <h2>Manual Review Steps — What You Do</h2>
+    <p>The steps where Payroll Ops and Treasury must take action. These are your control points.</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-eyebrow"><span class="callout-icon">⚠️</span><span class="callout-title">Your role has shifted</span></div>
+    <div class="callout-body">You are no longer executing payments manually. You are the quality control layer — reviewing what the system has prepared, flagging exceptions, and authorizing the batch. The system cannot override your review or authorization.</div>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <div class="manual-step payops">
+      <div class="manual-step-header"><strong class="manual-step-title">Step 1 — Review employee rows in the Country Funding tab</strong><span class="role-tag role-payops">Payroll Ops</span></div>
+      <p class="manual-step-desc">Open Payments → select country → review the table. Look for red badges, amber icons, and supplementary rows before submitting.</p>
+      <ul class="checklist">
+        <li>All rows with valid net pay are in Draft status and ready to select</li>
+        <li>Red "Data Error" rows cannot be submitted — resolve at source in Fabric/LPP first, then refresh</li>
+        <li>Amber warning rows require you to tick an acknowledgement checkbox before they can be included</li>
+        <li>Supplementary rows require a classification (Correction, Bonus, Supplementary Pay, Other) before submitting</li>
+      </ul>
+    </div>
+
+    <div class="manual-step payops">
+      <div class="manual-step-header"><strong class="manual-step-title">Step 2 — Submit for Disbursement</strong><span class="role-tag role-payops">Payroll Ops</span></div>
+      <p class="manual-step-desc">Select valid rows, click Submit for Disbursement, verify the confirmation bar, then confirm.</p>
+      <ul class="checklist">
+        <li>Double-check headcount and currency total in the confirmation bar before clicking Confirm</li>
+        <li>Once confirmed, rows are locked — cannot edit or recall without escalating to Treasury</li>
+        <li>Green success banner confirms submission and Treasury notification</li>
+      </ul>
+    </div>
+
+    <div class="manual-step treasury">
+      <div class="manual-step-header"><strong class="manual-step-title">Step 3 — Treasury Authorization (Disburse Salaries tab)</strong><span class="role-tag role-treasury">Treasury</span></div>
+      <p class="manual-step-desc">Treasury reviews submitted payments, confirms the balance check passed, and authorizes the batch. This is the final human gate before the wire is sent.</p>
+      <ul class="checklist">
+        <li>Balance check result is shown — Treasury confirms funds are sufficient</li>
+        <li>Authorize / Execute Disbursement button triggers the wire instruction to Citi automatically</li>
+        <li>Treasury cannot authorize if the pre-flight balance check failed</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Screenshot 2: Disburse Salaries tab -->
+  <div class="screenshot-wrap">
+    <img src="atlas-ss-2.png" alt="Atlas Disburse Salaries tab — ready to disburse with employee list" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div style="display:none;border:1.5px dashed var(--border-md);border-radius:8px;background:var(--surface);height:140px;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:var(--text-3);font-size:13px;">
+      <span style="font-size:22px">🖼️</span><span>Save <strong style="color:var(--text-2)">atlas-ss-2.png</strong> to Desktop</span>
+    </div>
+    <div class="screenshot-caption">Disburse Salaries tab — "Ready to Disburse" status. Treasury sees employee list with salary and payroll amounts before executing disbursement.</div>
+  </div>
+</div>
+
+
+<!-- ═══ PAGE 8: PAYMENT TRACKING ═══ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-tag">Section 5</div>
+    <h2>Payment Tracking — Status by Status</h2>
+    <p>How to read the Payment Tracking tab from submission through to settled.</p>
+  </div>
+
+  <div class="status-pipeline">
+    <div class="status-node s-draft">Draft<div class="status-sub">Payroll Ops review</div></div>
+    <div class="status-node s-submit">Submitted<div class="status-sub">Pending Treasury</div></div>
+    <div class="status-node s-auth">Authorized<div class="status-sub">Treasury approved</div></div>
+    <div class="status-node s-auto">Wire Sent<div class="status-sub">Sent to Citi</div></div>
+    <div class="status-node s-accepted">Accepted<div class="status-sub">Citi confirmed</div></div>
+    <div class="status-node s-settled">Settled<div class="status-sub">Employee paid T+2</div></div>
+  </div>
+
+  <table>
+    <thead><tr><th style="width:18%">Status</th><th style="width:14%">Who sets it</th><th style="width:38%">What it means</th><th style="width:30%">What to do</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Draft</strong></td><td class="td-auto">System</td><td>G2N data received, row ready for Payroll Ops to review</td><td>Review for flags; select and submit</td></tr>
+      <tr><td><strong>Submitted</strong></td><td class="td-manual">Payroll Ops</td><td>Row submitted for Treasury review. Locked.</td><td>Nothing — wait for Treasury to authorize</td></tr>
+      <tr><td><strong>Authorized</strong></td><td class="td-manual">Treasury</td><td>Treasury approved the payment. System generating wire instruction.</td><td>Nothing — system takes over</td></tr>
+      <tr><td><strong>Wire Sent</strong></td><td class="td-auto">System</td><td>Wire instruction delivered to Citi WorldLink. Awaiting Citi acknowledgement.</td><td>Nothing — monitor status</td></tr>
+      <tr><td><strong>Instruction Accepted</strong></td><td class="td-auto">System (Citi)</td><td>Citi accepted and processing the wire. Settlement in T+2 business days.</td><td>Nothing — wire is in motion</td></tr>
+      <tr><td><strong>Settled</strong></td><td class="td-auto">System (Citi)</td><td>Funds received by employee's bank. Cycle complete.</td><td>No action. Record complete for audit.</td></tr>
+      <tr><td><strong>Failed</strong></td><td class="td-auto">System (Citi)</td><td>Citi rejected the wire — usually invalid IBAN, bank account, or AML check failure.</td><td>Review error reason → escalate to Payments team with wire reference</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout info">
+    <div class="callout-eyebrow"><span class="callout-icon">📍</span><span class="callout-title">Settlement timing</span></div>
+    <div class="callout-body">T+2 = 2 business days after Citi accepts the wire instruction. Settlement does not happen on weekends or public holidays in the destination country. A wire sent Thursday typically settles Monday.</div>
+  </div>
+
+  <!-- Screenshot 4: Settled tab -->
+  <div class="screenshot-wrap">
+    <img src="atlas-ss-4.png" alt="Atlas Settled tab — Australia batch complete with activity log" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div style="display:none;border:1.5px dashed var(--border-md);border-radius:8px;background:var(--surface);height:140px;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:var(--text-3);font-size:13px;">
+      <span style="font-size:22px">🖼️</span><span>Save <strong style="color:var(--text-2)">atlas-ss-4.png</strong> to Desktop</span>
+    </div>
+    <div class="screenshot-caption">Settled tab — Australia batch marked "Complete" with activity log showing full timeline: Batch Created → Cross-Border Transfer → Local Disbursement → Salaries Credited.</div>
+  </div>
+</div>
+
+
+<!-- ═══ PAGE 9: ERRORS & FLAGS ═══ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-tag">Section 6</div>
+    <h2>Handling Data Errors and Flags</h2>
+    <p>The system surfaces three types of issues. Here is how to handle each one.</p>
+  </div>
+
+  <div class="flag-block err">
+    <div class="flag-header"><span class="flag-icon">🔴</span><strong class="flag-title">Hard Block — Data Error</strong></div>
+    <p class="flag-desc">The system received invalid or missing data from Fabric. This row cannot be submitted until the source data is fixed.</p>
+    <div class="flag-examples">Examples:
+      <ul><li>Net pay is null or missing</li><li>Duplicate record received for the same employee</li><li>Invalid bank account format / IBAN fails validation</li></ul>
+    </div>
+    <div class="flag-action"><strong>What to do:</strong> Contact the Payroll data team or check LPP/Fabric for the specific employee. Once corrected, refresh the page — the row will update. Do NOT submit any workaround.</div>
+  </div>
+
+  <div class="flag-block warn">
+    <div class="flag-header"><span class="flag-icon">🟡</span><strong class="flag-title">Soft Warning — Anomalous Data</strong></div>
+    <p class="flag-desc">Data is technically valid but unusual. You CAN submit — but must manually acknowledge the row first.</p>
+    <div class="flag-examples">Examples:
+      <ul><li>Net pay is zero — "please verify before submitting"</li><li>Net pay significantly higher than prior run — "net pay is 28% higher than previous run"</li></ul>
+    </div>
+    <div class="flag-action"><strong>What to do:</strong> Read the tooltip on the amber icon. Verify the amount with the payroll data team or client. If correct, tick the acknowledgement checkbox. If incorrect, escalate to fix at source.</div>
+  </div>
+
+  <div class="flag-block suppl">
+    <div class="flag-header"><span class="flag-icon">🔵</span><strong class="flag-title">Supplementary Payment</strong></div>
+    <p class="flag-desc">Fabric has pushed new data for an employee whose payment has already been authorized or wired. Treated as a new, separate payment — not a modification of the original.</p>
+    <div class="flag-action"><strong>What to do:</strong> Select a classification from the dropdown (Correction / Supplementary Pay / Bonus / Other). This unlocks the row for submission. The original payment is not affected.</div>
+  </div>
+
+  <!-- Screenshot 3: Exceptions tab -->
+  <div class="screenshot-wrap">
+    <img src="atlas-ss-3.png" alt="Atlas Exceptions tab — Germany batch with Action Required and failed payments" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div style="display:none;border:1.5px dashed var(--border-md);border-radius:8px;background:var(--surface);height:140px;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:var(--text-3);font-size:13px;">
+      <span style="font-size:22px">🖼️</span><span>Save <strong style="color:var(--text-2)">atlas-ss-3.png</strong> to Desktop</span>
+    </div>
+    <div class="screenshot-caption">Exceptions tab — Germany batch flagged "Action Required." 3 failed payments shown in red: Account closed, Insufficient recipient info, Invalid routing number.</div>
+  </div>
+</div>
+
+
+<!-- ═══ PAGE 10: FAQ WSEs ═══ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-tag">Section 7</div>
+    <h2>FAQ — Questions from WSEs</h2>
+    <p>Answers for workers/employees asking about their salary payment under the new system.</p>
+  </div>
+  <div class="audience-header"><span class="audience-pill pill-wse">For WSEs / Employees</span></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>When will I receive my salary?</div><div class="faq-a">Your salary is sent via international wire transfer and typically arrives within <strong>2 business days</strong> of the payment being authorized. Business days exclude weekends and public holidays in your country. If your payment was authorized on a Thursday, you would typically receive it by the following Monday. This is faster than before — previously it could take up to 5 business days.</div></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>How do I know my payment has been sent?</div><div class="faq-a">Your Atlas portal will show your payment status. Once your payment moves to <strong>"Wire Sent"</strong> status, the instruction has been delivered to Citi. When it moves to <strong>"Settled,"</strong> the funds have reached your bank. You may also see a pending transaction in your bank app before full settlement.</div></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>My payment hasn't arrived after 2 business days. What do I do?</div><div class="faq-a">Check that your bank account details on file with Atlas are correct — especially your IBAN and bank routing details. If correct and it's been more than <strong>3 business days,</strong> contact your Atlas client success representative or HR admin. Have your employee ID and pay period ready. Do not contact Citi directly — all payment queries go through Atlas.</div></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>Will the amount I receive change?</div><div class="faq-a">No. The amount is determined by your gross-to-net payroll calculation — the same process as before. The payment system change (from Transfermate to WorldLink) does not affect your net pay. Questions about your payroll calculation should go to your HR admin.</div></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>What currency will I be paid in?</div><div class="faq-a">You will be paid in your local currency as agreed in your employment contract. The system handles any required currency conversion as part of the wire instruction. You do not need to do anything differently.</div></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>Is my banking information secure?</div><div class="faq-a">Yes. Bank account details are stored encrypted within Atlas and are only used to generate the wire instruction to Citi. Atlas does not store or share your card details. To update your bank details, use your Atlas employee portal — changes take effect from the next payroll cycle.</div></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>What if I see "Payment Failed" in my portal?</div><div class="faq-a">A failed payment is usually caused by an <strong>incorrect bank account number or IBAN.</strong> Check your bank details in the Atlas portal and contact your HR admin to correct them. Once corrected, the payment will be re-initiated in the next available cycle.</div></div>
+</div>
+
+
+<!-- ═══ PAGE 11: FAQ CLIENTS ═══ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-tag">Section 8</div>
+    <h2>FAQ — Questions from Clients</h2>
+    <p>Answers for HR managers, client admins, and finance leads asking about the payment automation.</p>
+  </div>
+  <div class="audience-header"><span class="audience-pill pill-client">For Clients — HR Managers & Finance Leads</span></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>What has changed in how Atlas processes payroll payments?</div><div class="faq-a">Atlas now processes payroll disbursements directly through <strong>Citi WorldLink,</strong> a global wire transfer network. Previously, payments went through Transfermate as an intermediary, adding cost and processing time. With WorldLink, the process is fully automated from payroll data to wire instruction — reducing settlement from T+5 to T+2 business days, and eliminating Transfermate fees entirely.</div></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>Do we need to do anything differently on our end?</div><div class="faq-a">No changes are required on your side. <strong>Your payroll data submission process stays the same.</strong> The change is entirely in how Atlas processes and disburses payments after receiving your payroll data. Your employees will see faster payment times — that's the visible difference.</div></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>How much faster will my employees receive their salaries?</div><div class="faq-a">Settlement time improves from <strong>T+5 to T+2 business days</strong> — a reduction of 3 business days. T refers to the day the payment is authorized by Atlas Treasury. Employees will see funds arrive noticeably earlier compared to previous payroll cycles.</div></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>Which countries are covered?</div><div class="faq-a">Phase 1 covers <strong>57 countries</strong> via Citi WorldLink wire transfers. Finland goes live May 15, 2026, with other countries following throughout May. SEPA payments for SEPA-zone countries are Phase 2 later this year — further reducing cost for European payments.</div></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>Will the cost to us change?</div><div class="faq-a">You benefit from the removal of Transfermate as an intermediary. Transfermate fees were built into the cost of payment processing — eliminating them reduces per-payment cost. Your Atlas account team will confirm the specifics for your contract and countries.</div></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>How can I see the status of my employees' payments?</div><div class="faq-a">Payment status is tracked in real time inside the <strong>Atlas platform.</strong> Your HR admin or client contact at Atlas can pull a payment status report per cycle showing each employee's current stage, wire reference, and settlement date. Ask your Atlas client success rep to set this up.</div></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>What happens if a payment fails for one of my employees?</div><div class="faq-a">Atlas detects failed payments automatically and flags them in the system. We will notify you within <strong>one business day</strong> of a failure, with the reason (typically an invalid bank account). We will work with you to correct the bank details and re-initiate payment in the next available cycle.</div></div>
+
+  <div class="faq-item"><div class="faq-q"><span class="faq-q-label">Q</span>Why is Atlas using wire transfers instead of SEPA or faster rails?</div><div class="faq-a">Wire transfers via Citi WorldLink cover all 57 countries in scope — SEPA only applies to ~36 European countries. Starting with wires ensures every country goes live on the same model in May. <strong>SEPA is Phase 2</strong> and will layer in for SEPA-zone countries to further optimize speed and cost.</div></div>
+</div>
+
+
+<!-- ═══ PAGE 12: QUICK REFERENCE ═══ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-tag">Section 9</div>
+    <h2>Quick Reference Card</h2>
+    <p>Keep this page accessible during every payroll cycle.</p>
+  </div>
+
+  <div class="qr-two-col">
+    <div class="qr-card">
+      <h4>Payroll Ops — Cycle Checklist</h4>
+      <ol class="qr-list">
+        <li>Open Payments → select country</li>
+        <li>Review all rows in Country Funding tab</li>
+        <li>Resolve or acknowledge any flags before submitting</li>
+        <li>Classify any supplementary rows</li>
+        <li>Confirm headcount and total before submitting</li>
+        <li>Notify Treasury if any critical data issues found</li>
+        <li>Monitor Payment Tracking tab after submission</li>
+      </ol>
+    </div>
+    <div class="qr-card">
+      <h4>Treasury — Authorization Checklist</h4>
+      <ol class="qr-list">
+        <li>Review submitted payments in Disburse Salaries tab</li>
+        <li>Confirm balance check passed (shown in tab)</li>
+        <li>Verify batch count and total matches expectation</li>
+        <li>Click Execute Disbursement to trigger wire instruction</li>
+        <li>Monitor Payment Tracking for Wire Sent confirmation</li>
+        <li>Flag any failed payments to Payments team immediately</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="qr-two-col">
+    <div class="qr-card">
+      <h4>Key Terms</h4>
+      <div class="terms-grid">
+        <div class="term-key">G2N</div><div class="term-val">Gross-to-Net payroll data from Fabric/LPP</div>
+        <div class="term-key">WorldLink</div><div class="term-val">Citi's global wire transfer network</div>
+        <div class="term-key">T+2</div><div class="term-val">2 business days after wire accepted by Citi</div>
+        <div class="term-key">Hard Block</div><div class="term-val">Data error — row cannot be submitted</div>
+        <div class="term-key">Soft Warning</div><div class="term-val">Anomaly — requires acknowledgement to proceed</div>
+        <div class="term-key">Supplementary</div><div class="term-val">New data pushed for an already-wired employee</div>
+        <div class="term-key">Wire Reference</div><div class="term-val">Citi's unique ID for each wire transaction</div>
+      </div>
+    </div>
+    <div class="qr-card">
+      <h4>Client Success — Escalation Path</h4>
+      <ol class="qr-list">
+        <li>WSE not paid after T+3 → raise with Payroll Ops</li>
+        <li>Payment Failed → check bank details, notify client</li>
+        <li>Client asks for wire reference → request from Payments team</li>
+        <li>Settlement time question → T+2 from authorization date</li>
+        <li>Data error not resolving → escalate to Payroll Data team</li>
+        <li>SEPA / Phase 2 timeline → route to Product</li>
+      </ol>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <table>
+    <thead><tr><th>Issue</th><th>First Contact</th><th>Escalation</th><th>SLA</th></tr></thead>
+    <tbody>
+      <tr><td>Payment not received by WSE (T+3+)</td><td>Payroll Ops</td><td>Payments team + Citi wire reference</td><td>Same business day response</td></tr>
+      <tr><td>Payment Failed status in Atlas</td><td>Client Success → notify client</td><td>Payroll Ops to correct bank details</td><td>Within 1 business day</td></tr>
+      <tr><td>Data Error not resolving after Fabric fix</td><td>Payroll Ops → Payroll Data team</td><td>Engineering (Payments team)</td><td>Within 4 hours during payroll cycle</td></tr>
+      <tr><td>Balance check failed — insufficient funds</td><td>Treasury → Finance</td><td>CFO / Finance Ops</td><td>Immediate — blocks the cycle</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout info" style="margin-top: 20px;">
+    <div class="callout-eyebrow"><span class="callout-icon">📌</span><span class="callout-title">Coming in Phase 2</span></div>
+    <div class="callout-body">SEPA payments for SEPA-zone countries · G2N reconciliation report per cycle · Rippling automated invoice generation on payroll close.</div>
+  </div>
+
+  <div class="footer-note">
+    WorldLink Payment Automation Training Guide — v1.0 — May 2026 — Atlas HXM Internal Use Only<br>
+    Questions or corrections: contact the Payments & Platform Team
+  </div>
+</div>
+
+</body>
+</html>
