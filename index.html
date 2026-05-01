@@ -579,6 +579,58 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
   pointer-events: none;
 }
 
+
+/* ── Countries Dashboard ── */
+.phase-selector{display:flex;align-items:center;gap:14px;margin:24px 0 20px;flex-wrap:wrap}
+.phase-btn{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:13px 22px;border-radius:10px;border:2px solid oklch(27% 0.06 295);background:oklch(14% 0.04 295);cursor:pointer;transition:all 0.2s;text-align:left;font-family:inherit}
+.phase-btn.active{border-color:var(--blue-500);background:oklch(18% 0.14 264)}
+.phase-btn:hover:not(.active){border-color:oklch(40% 0.10 295);background:oklch(16% 0.05 295)}
+.phase-label{font-size:0.92rem;font-weight:800;color:white;letter-spacing:-0.01em}
+.phase-sub{font-size:0.69rem;color:oklch(56% 0.05 295);font-weight:600}
+.phase-btn.active .phase-sub{color:oklch(70% 0.14 264)}
+.phase-arrow{font-size:1.4rem;color:oklch(42% 0.08 295);font-weight:200;line-height:1}
+.country-stats-strip{display:flex;gap:0;border:1px solid oklch(23% 0.05 295);border-radius:12px;overflow:hidden;margin-bottom:20px}
+.cs-stat{flex:1;padding:14px 16px;border-right:1px solid oklch(23% 0.05 295)}
+.cs-stat:last-child{border-right:none}
+.cs-num{font-size:1.55rem;font-weight:900;color:white;letter-spacing:-0.03em;line-height:1}
+.cs-desc{font-size:0.60rem;color:oklch(50% 0.05 295);margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em}
+.cs-stat.sepa-stat .cs-num{color:oklch(60% 0.22 295)}
+.cs-stat.ach-stat .cs-num{color:oklch(62% 0.22 325)}
+.method-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:12px;margin-bottom:20px}
+.method-card{padding:16px;border-radius:10px;border:1px solid oklch(25% 0.05 295);background:oklch(12% 0.04 295)}
+.wire-card{border-top:3px solid var(--blue-500)}
+.sepa-card{border-top:3px solid var(--purple-500)}
+.ach-card{border-top:3px solid var(--magenta-500)}
+.method-card.p2-card{display:none}
+.phase2-active .method-card.p2-card{display:block}
+.method-icon{font-size:1.3rem;margin-bottom:7px}
+.method-name{font-size:0.84rem;font-weight:800;color:white;margin-bottom:5px}
+.method-desc{font-size:0.69rem;color:oklch(58% 0.04 295);line-height:1.50}
+.method-tag{font-size:0.60rem;color:oklch(48% 0.09 264);font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-top:8px}
+.sepa-card .method-tag{color:oklch(48% 0.09 295)}
+.ach-card .method-tag{color:oklch(48% 0.09 325)}
+.country-controls{margin-bottom:14px}
+.region-chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:5px 13px;border-radius:20px;border:1px solid oklch(27% 0.05 295);background:transparent;color:oklch(56% 0.05 295);font-size:0.69rem;font-weight:700;cursor:pointer;transition:all 0.15s;font-family:inherit}
+.chip.active,.chip:hover{border-color:var(--blue-500);color:white;background:oklch(18% 0.11 264)}
+.country-table-wrap{border:1px solid oklch(23% 0.05 295);border-radius:10px;overflow:hidden;max-height:420px;overflow-y:auto;margin-bottom:6px;scrollbar-width:thin;scrollbar-color:oklch(30% 0.06 295) transparent}
+.country-table{width:100%;border-collapse:collapse;font-size:0.75rem}
+.country-table thead tr{background:oklch(14% 0.05 295);position:sticky;top:0;z-index:1}
+.country-table th{padding:10px 14px;text-align:left;color:oklch(46% 0.05 295);font-weight:700;text-transform:uppercase;letter-spacing:0.05em;font-size:0.60rem;border-bottom:1px solid oklch(21% 0.04 295)}
+.country-table td{padding:8px 14px;border-bottom:1px solid oklch(18% 0.04 295);color:oklch(76% 0.03 295);vertical-align:middle}
+.country-table tbody tr:last-child td{border-bottom:none}
+.country-table tbody tr:hover td{background:oklch(16% 0.07 278)}
+.th-right,.td-right{text-align:right}
+.flag-name{display:flex;align-items:center;gap:8px}
+.flag{font-size:1.05rem;line-height:1}
+.cname{font-weight:700;color:oklch(90% 0.02 295)}
+.currency-badge{display:inline-block;padding:2px 7px;border-radius:4px;background:oklch(18% 0.08 264);color:oklch(70% 0.14 264);font-size:0.63rem;font-weight:800;letter-spacing:0.04em}
+.rail-badges{display:flex;gap:4px;flex-wrap:wrap}
+.rail-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:0.60rem;font-weight:800;letter-spacing:0.03em}
+.rail-wire{background:oklch(18% 0.12 264);color:oklch(66% 0.18 264)}
+.rail-sepa{background:oklch(16% 0.12 295);color:oklch(66% 0.18 295)}
+.rail-ach{background:oklch(16% 0.12 325);color:oklch(66% 0.18 325)}
+.country-count-note{font-size:0.68rem;color:oklch(48% 0.04 295);margin-top:6px}
 </style>
 </head>
 <body>
@@ -604,6 +656,7 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
     <a class="nav-link" href="#section-5">Tracking</a>
     <a class="nav-link" href="#section-6">Errors</a>
     <a class="nav-link" href="#section-7">FAQ</a>
+    <a class="nav-link" href="#section-10">Countries</a>
   </div>
 </nav>
 
@@ -1287,6 +1340,102 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
     <div class="callout-body">SEPA payments for SEPA-zone countries · G2N reconciliation report per cycle · Rippling automated invoice generation on payroll close.</div>
   </div>
 
+
+<!-- ═══ PAGE 10: COUNTRIES DASHBOARD ═══ -->
+<div class="page" id="section-10" data-section="Countries">
+  <div class="section-eyebrow">Global Coverage</div>
+  <h2 class="section-h2">Country Coverage &amp; Payment Rails</h2>
+  <p class="section-lead">WorldLink currently processes payroll across <strong>66 countries</strong> via wire transfer (Phase 1). Phase 2 adds SEPA rails for EU/EEA markets and ACH for North America — reducing fees and settlement time for those corridors without changing the workflow for Payroll Ops.</p>
+
+  <div class="phase-selector" id="phase-selector">
+    <button class="phase-btn active" data-phase="1">
+      <span class="phase-label">Phase 1 &mdash; Wire Only</span>
+      <span class="phase-sub">66 countries &middot; International wire transfer</span>
+    </button>
+    <span class="phase-arrow">&#8594;</span>
+    <button class="phase-btn" data-phase="2">
+      <span class="phase-label">Phase 2 &mdash; Multi-Rail</span>
+      <span class="phase-sub">SEPA for EU/EEA &middot; ACH for Canada</span>
+    </button>
+  </div>
+
+  <div class="country-stats-strip" id="country-stats-strip">
+    <div class="cs-stat">
+      <div class="cs-num" id="cs-countries">66</div>
+      <div class="cs-desc">Countries</div>
+    </div>
+    <div class="cs-stat">
+      <div class="cs-num" id="cs-wire">66</div>
+      <div class="cs-desc">Wire-enabled</div>
+    </div>
+    <div class="cs-stat sepa-stat">
+      <div class="cs-num" id="cs-sepa">0</div>
+      <div class="cs-desc">SEPA-enabled</div>
+    </div>
+    <div class="cs-stat ach-stat">
+      <div class="cs-num" id="cs-ach">0</div>
+      <div class="cs-desc">ACH-enabled</div>
+    </div>
+    <div class="cs-stat">
+      <div class="cs-num">54</div>
+      <div class="cs-desc">Currencies</div>
+    </div>
+  </div>
+
+  <div class="method-cards" id="method-cards">
+    <div class="method-card wire-card">
+      <div class="method-icon">&#127760;</div>
+      <div class="method-name">Wire Transfer</div>
+      <div class="method-desc">Universal rail. WorldLink routes international wires through correspondent banks in every supported country. Works regardless of local banking infrastructure.</div>
+      <div class="method-tag">All phases &middot; All 66 countries</div>
+    </div>
+    <div class="method-card sepa-card p2-card">
+      <div class="method-icon">&#127466;&#127482;</div>
+      <div class="method-name">SEPA Credit Transfer</div>
+      <div class="method-desc">Single Euro Payments Area rail for EU/EEA markets. Same-day or next-day settlement in EUR and DKK, with lower per-transfer fees than international wire routing.</div>
+      <div class="method-tag">Phase 2 &middot; 7 EU/EEA countries</div>
+    </div>
+    <div class="method-card ach-card p2-card">
+      <div class="method-icon">&#127464;&#127462;</div>
+      <div class="method-name">ACH (North America)</div>
+      <div class="method-desc">Automated Clearing House for CAD payroll in Canada. Batch processing with 1&ndash;2 day settlement at significantly lower cost than wire for equivalent domestic transfers.</div>
+      <div class="method-tag">Phase 2 &middot; Canada</div>
+    </div>
+  </div>
+
+  <div class="country-controls">
+    <div class="region-chips" id="region-chips">
+      <button class="chip active" data-region="all">All Regions</button>
+      <button class="chip" data-region="africa">Africa</button>
+      <button class="chip" data-region="americas">Americas</button>
+      <button class="chip" data-region="asia">Asia Pacific</button>
+      <button class="chip" data-region="europe">Europe</button>
+      <button class="chip" data-region="middle-east">Middle East</button>
+    </div>
+  </div>
+
+  <div class="country-table-wrap">
+    <table class="country-table">
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Currency</th>
+          <th>Payment Rails</th>
+          <th>Funding Method</th>
+          <th class="th-right">Region</th>
+        </tr>
+      </thead>
+      <tbody id="country-tbody"></tbody>
+    </table>
+  </div>
+  <div class="country-count-note" id="country-count-note">Showing 66 of 66 countries</div>
+
+  <div class="callout info" id="p2-callout" style="margin-top:20px;display:none">
+    <div class="callout-eyebrow"><span class="callout-icon">&#128204;</span><span class="callout-title">Phase 2 Expansion</span></div>
+    <div class="callout-body">SEPA rails enable same-day EUR/DKK settlement for Bulgaria, Croatia, Denmark, Greece, Italy, Luxembourg, and Slovakia — eliminating correspondent bank hops. ACH in Canada reduces CAD payroll wire costs by ~60&ndash;80%. Payroll Ops workflow is unchanged; WorldLink selects the optimal rail automatically.</div>
+  </div>
+</div>
+
   <div class="footer-note">
     WorldLink Payment Automation Training Guide — v1.0 — May 2026 — Atlas HXM Internal Use Only<br>
     Questions or corrections: contact the Payments & Platform Team
@@ -1336,5 +1485,140 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
   }, { passive: true });
 })();
 </script>
+
+<script>
+(function(){
+  const COUNTRIES = [
+    {name:"Argentina",flag:"\u{1F1E6}\u{1F1F7}",currency:"ARS",amount:"23,135,951",region:"americas",sepa:false,ach:false},
+    {name:"Armenia",flag:"\u{1F1E6}\u{1F1F2}",currency:"AMD",amount:"1,712,413",region:"middle-east",sepa:false,ach:false},
+    {name:"Azerbaijan",flag:"\u{1F1E6}\u{1F1FF}",currency:"AZN",amount:"10,000",region:"middle-east",sepa:false,ach:false},
+    {name:"Bahrain",flag:"\u{1F1E7}\u{1F1ED}",currency:"BHD",amount:"7,611",region:"middle-east",sepa:false,ach:false},
+    {name:"Bangladesh",flag:"\u{1F1E7}\u{1F1E9}",currency:"BDT",amount:"11,199,953",region:"asia",sepa:false,ach:false},
+    {name:"Barbados",flag:"\u{1F1E7}\u{1F1E7}",currency:"BBD",amount:"43,511",region:"americas",sepa:false,ach:false},
+    {name:"Bolivia",flag:"\u{1F1E7}\u{1F1F4}",currency:"BOB",amount:"16,757",region:"americas",sepa:false,ach:false},
+    {name:"Brazil",flag:"\u{1F1E7}\u{1F1F7}",currency:"BRL",amount:"1,726,990",region:"americas",sepa:false,ach:false},
+    {name:"Bulgaria",flag:"\u{1F1E7}\u{1F1EC}",currency:"BGN",amount:"42,685",region:"europe",sepa:true,ach:false},
+    {name:"Canada",flag:"\u{1F1E8}\u{1F1E6}",currency:"CAD",amount:"1,209,155",region:"americas",sepa:false,ach:true},
+    {name:"Chile",flag:"\u{1F1E8}\u{1F1F1}",currency:"CLP",amount:"110,128,746",region:"americas",sepa:false,ach:false},
+    {name:"China",flag:"\u{1F1E8}\u{1F1F3}",currency:"CNY",amount:"970,704",region:"asia",sepa:false,ach:false},
+    {name:"Colombia",flag:"\u{1F1E8}\u{1F1F4}",currency:"COP",amount:"1,411,140,651",region:"americas",sepa:false,ach:false},
+    {name:"Costa Rica",flag:"\u{1F1E8}\u{1F1F7}",currency:"CRC",amount:"15,017,921",region:"americas",sepa:false,ach:false},
+    {name:"Croatia",flag:"\u{1F1ED}\u{1F1F7}",currency:"EUR",amount:"4,937",region:"europe",sepa:true,ach:false},
+    {name:"Denmark",flag:"\u{1F1E9}\u{1F1F0}",currency:"DKK",amount:"849,827",region:"europe",sepa:true,ach:false},
+    {name:"Ecuador",flag:"\u{1F1EA}\u{1F1E8}",currency:"USD",amount:"55,997",region:"americas",sepa:false,ach:false},
+    {name:"El Salvador",flag:"\u{1F1F8}\u{1F1FB}",currency:"USD",amount:"4,731",region:"americas",sepa:false,ach:false},
+    {name:"Georgia",flag:"\u{1F1EC}\u{1F1EA}",currency:"GEL",amount:"591,326",region:"europe",sepa:false,ach:false},
+    {name:"Greece",flag:"\u{1F1EC}\u{1F1F7}",currency:"EUR",amount:"108,405",region:"europe",sepa:true,ach:false},
+    {name:"Guatemala",flag:"\u{1F1EC}\u{1F1F9}",currency:"GTQ",amount:"574,252",region:"americas",sepa:false,ach:false},
+    {name:"Guyana",flag:"\u{1F1EC}\u{1F1FE}",currency:"GYD",amount:"2,111,143",region:"americas",sepa:false,ach:false},
+    {name:"Hong Kong",flag:"\u{1F1ED}\u{1F1F0}",currency:"HKD",amount:"1,595,423",region:"asia",sepa:false,ach:false},
+    {name:"India",flag:"\u{1F1EE}\u{1F1F3}",currency:"INR",amount:"72,462,102",region:"asia",sepa:false,ach:false},
+    {name:"Isle of Man",flag:"\u{1F1EE}\u{1F1F2}",currency:"GBP",amount:"3,524",region:"europe",sepa:false,ach:false},
+    {name:"Israel",flag:"\u{1F1EE}\u{1F1F1}",currency:"ILS",amount:"254,018",region:"middle-east",sepa:false,ach:false},
+    {name:"Italy",flag:"\u{1F1EE}\u{1F1F9}",currency:"EUR",amount:"50,000",region:"europe",sepa:true,ach:false},
+    {name:"Kazakhstan",flag:"\u{1F1F0}\u{1F1FF}",currency:"KZT",amount:"7,652,693",region:"asia",sepa:false,ach:false},
+    {name:"Kenya",flag:"\u{1F1F0}\u{1F1EA}",currency:"KES",amount:"21,224,299",region:"africa",sepa:false,ach:false},
+    {name:"Kuwait",flag:"\u{1F1F0}\u{1F1FC}",currency:"KWD",amount:"10,000",region:"middle-east",sepa:false,ach:false},
+    {name:"Kyrgyzstan",flag:"\u{1F1F0}\u{1F1EC}",currency:"USD",amount:"5,720",region:"asia",sepa:false,ach:false},
+    {name:"Luxembourg",flag:"\u{1F1F1}\u{1F1FA}",currency:"EUR",amount:"28,082",region:"europe",sepa:true,ach:false},
+    {name:"Malaysia",flag:"\u{1F1F2}\u{1F1FE}",currency:"MYR",amount:"749,819",region:"asia",sepa:false,ach:false},
+    {name:"Mexico",flag:"\u{1F1F2}\u{1F1FD}",currency:"MXN",amount:"6,720,747",region:"americas",sepa:false,ach:false},
+    {name:"Moldova",flag:"\u{1F1F2}\u{1F1E9}",currency:"MDL",amount:"10,000",region:"europe",sepa:false,ach:false},
+    {name:"Montenegro",flag:"\u{1F1F2}\u{1F1EA}",currency:"EUR",amount:"5,951",region:"europe",sepa:false,ach:false},
+    {name:"Myanmar",flag:"\u{1F1F2}\u{1F1F2}",currency:"USD",amount:"50,000",region:"asia",sepa:false,ach:false},
+    {name:"New Zealand",flag:"\u{1F1F3}\u{1F1FF}",currency:"NZD",amount:"50,000",region:"asia",sepa:false,ach:false},
+    {name:"Nicaragua",flag:"\u{1F1F3}\u{1F1EE}",currency:"USD",amount:"18,683",region:"americas",sepa:false,ach:false},
+    {name:"Niger",flag:"\u{1F1F3}\u{1F1EA}",currency:"XOF",amount:"10,000",region:"africa",sepa:false,ach:false},
+    {name:"North Macedonia",flag:"\u{1F1F2}\u{1F1F0}",currency:"MKD",amount:"375,289",region:"europe",sepa:false,ach:false},
+    {name:"Pakistan",flag:"\u{1F1F5}\u{1F1F0}",currency:"PKR",amount:"15,750,754",region:"asia",sepa:false,ach:false},
+    {name:"Panama",flag:"\u{1F1F5}\u{1F1E6}",currency:"USD",amount:"16,946",region:"americas",sepa:false,ach:false},
+    {name:"Papua New Guinea",flag:"\u{1F1F5}\u{1F1EC}",currency:"PGK",amount:"14,057",region:"asia",sepa:false,ach:false},
+    {name:"Paraguay",flag:"\u{1F1F5}\u{1F1FE}",currency:"PYG",amount:"8,467,914",region:"americas",sepa:false,ach:false},
+    {name:"Peru",flag:"\u{1F1F5}\u{1F1EA}",currency:"PEN",amount:"154,792",region:"americas",sepa:false,ach:false},
+    {name:"Puerto Rico",flag:"\u{1F1F5}\u{1F1F7}",currency:"USD",amount:"43,494",region:"americas",sepa:false,ach:false},
+    {name:"Qatar",flag:"\u{1F1F6}\u{1F1E6}",currency:"QAR",amount:"32,500",region:"middle-east",sepa:false,ach:false},
+    {name:"Rwanda",flag:"\u{1F1F7}\u{1F1FC}",currency:"RWF",amount:"48,297,071",region:"africa",sepa:false,ach:false},
+    {name:"Saudi Arabia",flag:"\u{1F1F8}\u{1F1E6}",currency:"SAR",amount:"62,181",region:"middle-east",sepa:false,ach:false},
+    {name:"Serbia",flag:"\u{1F1F7}\u{1F1F8}",currency:"RSD",amount:"11,278,882",region:"europe",sepa:false,ach:false},
+    {name:"Slovakia",flag:"\u{1F1F8}\u{1F1F0}",currency:"EUR",amount:"7,531",region:"europe",sepa:true,ach:false},
+    {name:"South Africa",flag:"\u{1F1FF}\u{1F1E6}",currency:"ZAR",amount:"4,506,521",region:"africa",sepa:false,ach:false},
+    {name:"Sri Lanka",flag:"\u{1F1F1}\u{1F1F0}",currency:"LKR",amount:"5,782,457",region:"asia",sepa:false,ach:false},
+    {name:"Taiwan",flag:"\u{1F1F9}\u{1F1FC}",currency:"TWD",amount:"4,827,275",region:"asia",sepa:false,ach:false},
+    {name:"Tajikistan",flag:"\u{1F1F9}\u{1F1EF}",currency:"TJS",amount:"4,942",region:"asia",sepa:false,ach:false},
+    {name:"Tanzania",flag:"\u{1F1F9}\u{1F1FF}",currency:"TZS",amount:"17,241,856",region:"africa",sepa:false,ach:false},
+    {name:"Thailand",flag:"\u{1F1F9}\u{1F1ED}",currency:"THB",amount:"4,104,314",region:"asia",sepa:false,ach:false},
+    {name:"Trinidad and Tobago",flag:"\u{1F1F9}\u{1F1F9}",currency:"TTD",amount:"288,313",region:"americas",sepa:false,ach:false},
+    {name:"Turkey",flag:"\u{1F1F9}\u{1F1F7}",currency:"TRY",amount:"1,585,454",region:"middle-east",sepa:false,ach:false},
+    {name:"Uganda",flag:"\u{1F1FA}\u{1F1EC}",currency:"USD",amount:"47,638",region:"africa",sepa:false,ach:false},
+    {name:"Ukraine",flag:"\u{1F1FA}\u{1F1E6}",currency:"UAH",amount:"153,615",region:"europe",sepa:false,ach:false},
+    {name:"United Arab Emirates",flag:"\u{1F1E6}\u{1F1EA}",currency:"AED",amount:"4,788,207",region:"middle-east",sepa:false,ach:false},
+    {name:"Uruguay",flag:"\u{1F1FA}\u{1F1FE}",currency:"UYU",amount:"1,580,922",region:"americas",sepa:false,ach:false},
+    {name:"Uzbekistan",flag:"\u{1F1FA}\u{1F1FF}",currency:"UZS",amount:"34,841,448",region:"asia",sepa:false,ach:false},
+    {name:"Vietnam",flag:"\u{1F1FB}\u{1F1F3}",currency:"VND",amount:"3,001,264,064",region:"asia",sepa:false,ach:false}
+  ];
+
+  const REGION_LABELS = {africa:"Africa",americas:"Americas",asia:"Asia Pacific",europe:"Europe","middle-east":"Middle East"};
+  const SEPA_COUNT = COUNTRIES.filter(c=>c.sepa).length;
+  const ACH_COUNT  = COUNTRIES.filter(c=>c.ach).length;
+
+  let phase = 1;
+  let region = 'all';
+
+  const tbody      = document.getElementById('country-tbody');
+  const noteEl     = document.getElementById('country-count-note');
+  const sepaEl     = document.getElementById('cs-sepa');
+  const achEl      = document.getElementById('cs-ach');
+  const countEl    = document.getElementById('cs-countries');
+  const p2Callout  = document.getElementById('p2-callout');
+  const methodCards= document.getElementById('method-cards');
+
+  function render() {
+    const list = COUNTRIES.filter(c => region === 'all' || c.region === region);
+    tbody.innerHTML = list.map(c => {
+      const rails = ['<span class="rail-badge rail-wire">Wire</span>'];
+      if (phase === 2 && c.sepa) rails.push('<span class="rail-badge rail-sepa">SEPA</span>');
+      if (phase === 2 && c.ach)  rails.push('<span class="rail-badge rail-ach">ACH</span>');
+      const regionLabel = REGION_LABELS[c.region] || c.region;
+      return '<tr>'
+        + '<td><div class="flag-name"><span class="flag">' + c.flag + '</span><span class="cname">' + c.name + '</span></div></td>'
+        + '<td><span class="currency-badge">' + c.currency + '</span></td>'
+        + '<td><div class="rail-badges">' + rails.join('') + '</div></td>'
+        + '<td>Entity Bank Account</td>'
+        + '<td class="td-right" style="font-size:0.63rem;color:oklch(46% 0.05 295)">' + regionLabel + '</td>'
+        + '</tr>';
+    }).join('');
+    countEl.textContent = list.length;
+    sepaEl.textContent  = phase === 2 ? SEPA_COUNT : 0;
+    achEl.textContent   = phase === 2 ? ACH_COUNT  : 0;
+    const showing = list.length;
+    const total   = COUNTRIES.filter(c => phase===1 || true).length;
+    noteEl.textContent = 'Showing ' + showing + ' of 66 countries'
+      + (phase === 2 ? ' · ' + SEPA_COUNT + ' SEPA-eligible · ' + ACH_COUNT + ' ACH-eligible' : '');
+    p2Callout.style.display    = phase === 2 ? '' : 'none';
+    methodCards.classList.toggle('phase2-active', phase === 2);
+  }
+
+  // Phase buttons
+  document.querySelectorAll('.phase-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      phase = parseInt(btn.dataset.phase, 10);
+      document.querySelectorAll('.phase-btn').forEach(b => b.classList.toggle('active', b===btn));
+      render();
+    });
+  });
+
+  // Region chips
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      region = chip.dataset.region;
+      document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c===chip));
+      render();
+    });
+  });
+
+  render();
+})();
+</script>
+
 </body>
 </html>
