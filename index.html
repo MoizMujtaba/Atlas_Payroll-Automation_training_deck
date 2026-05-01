@@ -4,62 +4,75 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WorldLink Payment Automation — Training Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ── ATLAS HXM BRAND TOKENS ── */
 :root {
-  /* Atlas brand */
-  --atlas-blue:    oklch(52% 0.22 264);
-  --atlas-blue-dk: oklch(38% 0.2 264);
-  --atlas-blue-lt: oklch(95% 0.05 264);
-  --atlas-blue-md: oklch(72% 0.14 264);
+  /* Atlas Blue 500 #0559FA */
+  --blue-500:   oklch(50% 0.28 264);
+  --blue-900:   oklch(22% 0.16 264);
+  --blue-100:   oklch(94% 0.07 264);
+
+  /* Atlas Purple 500 #5B27E3 */
+  --purple-500: oklch(38% 0.29 295);
+  --purple-900: oklch(18% 0.18 295);
+  --purple-100: oklch(93% 0.06 295);
+
+  /* Atlas Magenta ~#C840E9 */
+  --magenta-500: oklch(54% 0.24 325);
+  --magenta-100: oklch(95% 0.05 325);
+
+  /* Brand dark #160629 */
+  --brand-dark:  oklch(11% 0.05 295);
+
+  /* Semantic accent (blue for product UI) */
+  --atlas-blue:    var(--blue-500);
+  --atlas-blue-dk: var(--blue-900);
+  --atlas-blue-lt: var(--blue-100);
+  --atlas-blue-md: oklch(72% 0.18 264);
 
   /* Surfaces */
   --bg:        oklch(99% 0.003 264);
-  --surface:   oklch(97% 0.005 264);
-  --surface-2: oklch(95% 0.007 264);
-  --border:    oklch(91% 0.007 264);
-  --border-md: oklch(84% 0.01 264);
+  --surface:   oklch(97.5% 0.005 295);
+  --surface-2: oklch(95.5% 0.008 295);
+  --border:    oklch(91% 0.006 295);
+  --border-md: oklch(84% 0.009 295);
 
   /* Text */
-  --text:    oklch(17% 0.015 264);
-  --text-2:  oklch(42% 0.01 264);
-  --text-3:  oklch(62% 0.007 264);
+  --text:    var(--brand-dark);
+  --text-2:  oklch(38% 0.04 295);
+  --text-3:  oklch(60% 0.025 295);
   --text-inv: oklch(99% 0.003 264);
 
-  /* Semantic */
+  /* Status semantic */
   --green:      oklch(50% 0.15 155);
   --green-bg:   oklch(96% 0.04 155);
   --green-bd:   oklch(78% 0.09 155);
   --green-text: oklch(30% 0.12 155);
-
   --amber:      oklch(68% 0.15 70);
   --amber-bg:   oklch(97% 0.04 85);
   --amber-bd:   oklch(82% 0.1 70);
   --amber-text: oklch(36% 0.12 60);
-
   --red:      oklch(52% 0.17 25);
   --red-bg:   oklch(97.5% 0.025 25);
   --red-bd:   oklch(80% 0.11 25);
   --red-text: oklch(33% 0.14 20);
 
-  --purple:      oklch(48% 0.15 295);
-  --purple-bg:   oklch(96.5% 0.04 295);
-  --purple-bd:   oklch(78% 0.09 295);
-  --purple-text: oklch(30% 0.13 295);
-
-  /* Step types */
+  /* Step type tokens */
   --auto-c:  var(--atlas-blue);
-  --auto-bg: var(--atlas-blue-lt);
+  --auto-bg: var(--blue-100);
   --man-c:   var(--amber-text);
   --man-bg:  var(--amber-bg);
-  --rev-c:   var(--purple-text);
-  --rev-bg:  var(--purple-bg);
+  --rev-c:   oklch(30% 0.13 295);
+  --rev-bg:  oklch(96.5% 0.04 295);
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { font-size: 16px; }
 body {
-  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family: 'Nunito', ui-rounded, system-ui, -apple-system, 'Segoe UI', sans-serif;
   color: var(--text);
   background: oklch(93% 0.008 264);
   line-height: 1.6;
@@ -81,9 +94,6 @@ body {
 @media (min-width: 1200px) { html { font-size: 17px; } }
 @media (min-width: 1600px) { html { font-size: 18px; } .page { max-width: 1060px; } }
 
-/* ── ATLAS LOGO SVG ── */
-.atlas-logo { display: flex; align-items: center; gap: 0; }
-
 /* ── COVER ── */
 .cover {
   padding: 0;
@@ -93,74 +103,148 @@ body {
   overflow: hidden;
   border-radius: 6px;
   min-height: 100vh;
+  background: linear-gradient(135deg, oklch(38% 0.29 295) 0%, oklch(48% 0.30 280) 100%);
 }
 .cover-header {
-  background: var(--atlas-blue);
-  padding: 16px 52px;
+  background: transparent;
+  padding: 20px 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.cover-header-brand { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: oklch(99% 0 0 / 0.65); }
-.cover-header-type  { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: oklch(99% 0 0 / 0.45); }
+.cover-header-type { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: oklch(99% 0 0 / 0.45); font-weight: 600; }
 
 .cover-body {
   flex: 1;
-  padding: 60px 64px 52px;
+  padding: 48px 64px 52px;
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 1;
 }
-
-/* Cover background decoration — grid lines */
 .cover-body::before {
   content: '';
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background-image:
-    repeating-linear-gradient(90deg, var(--border) 0, var(--border) 1px, transparent 1px, transparent 52px),
-    repeating-linear-gradient(0deg,  var(--border) 0, var(--border) 1px, transparent 1px, transparent 52px);
-  opacity: 0.35;
+    repeating-linear-gradient(90deg, oklch(99% 0 0 / 0.07) 0, oklch(99% 0 0 / 0.07) 1px, transparent 1px, transparent 52px),
+    repeating-linear-gradient(0deg,  oklch(99% 0 0 / 0.07) 0, oklch(99% 0 0 / 0.07) 1px, transparent 1px, transparent 52px);
   pointer-events: none;
 }
 
-.cover-logo-wrap { margin-bottom: 56px; }
-.cover-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--atlas-blue); margin-bottom: 16px; }
+.cover-logo-wrap { margin-bottom: 52px; }
+.cover-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: oklch(99% 0 0 / 0.6); margin-bottom: 18px; }
 .cover-h1 {
-  font-size: 58px;
-  font-weight: 800;
-  line-height: 1.05;
-  color: var(--text);
-  letter-spacing: -2px;
-  margin-bottom: 20px;
-  max-width: 620px;
+  font-size: 68px; font-weight: 900; line-height: 0.95;
+  color: oklch(99% 0 0); letter-spacing: -3px;
+  margin-bottom: 28px; max-width: 640px;
 }
-.cover-h1 em { font-style: normal; color: var(--atlas-blue); }
-.cover-sub { font-size: 15px; color: var(--text-2); max-width: 500px; line-height: 1.7; margin-bottom: 32px; }
+.cover-h1 em { font-style: normal; color: oklch(99% 0 0 / 0.7); }
+.cover-sub { font-size: 15px; color: oklch(99% 0 0 / 0.68); max-width: 480px; line-height: 1.7; margin-bottom: 36px; }
 .cover-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: auto; }
-.cover-tag { font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 4px; background: var(--atlas-blue-lt); color: var(--atlas-blue); }
+.cover-tag { font-size: 12px; font-weight: 700; padding: 5px 16px; border-radius: 6px; background: oklch(99% 0 0 / 0.14); color: oklch(99% 0 0 / 0.88); letter-spacing: 0.3px; }
 .cover-meta {
-  margin-top: 56px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  margin-top: 56px; padding-top: 24px;
+  border-top: 1px solid oklch(99% 0 0 / 0.18);
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
 }
-.cover-meta-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
-.cover-meta-value { font-size: 14px; font-weight: 600; color: var(--text); }
-
-/* Decorative large text */
+.cover-meta-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: oklch(99% 0 0 / 0.45); margin-bottom: 5px; }
+.cover-meta-value { font-size: 14px; font-weight: 700; color: oklch(99% 0 0); }
 .cover-deco {
-  position: absolute;
-  right: -10px; bottom: 40px;
-  font-size: 260px; font-weight: 900;
-  letter-spacing: -14px;
-  color: var(--atlas-blue-lt);
-  line-height: 1;
+  position: absolute; right: -60px; bottom: -30px;
+  font-size: 320px; font-weight: 900; letter-spacing: -20px;
+  color: oklch(99% 0 0 / 0.055); line-height: 1;
   pointer-events: none; user-select: none; z-index: 0;
 }
+
+/* ── IMPACT STAT STRIP (FCA Consumer Investment style) ── */
+.impact-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0; border-radius: 12px; overflow: hidden; margin: 0 0 28px;
+}
+.impact-stat {
+  padding: 22px 20px; background: var(--brand-dark); position: relative;
+}
+.impact-stat:not(:last-child) { border-right: 1px solid oklch(99% 0 0 / 0.1); }
+.impact-num { font-size: 36px; font-weight: 900; color: oklch(99% 0 0); line-height: 1; letter-spacing: -1.5px; margin-bottom: 5px; }
+.impact-label { font-size: 11px; color: oklch(99% 0 0 / 0.5); font-weight: 500; line-height: 1.4; }
+.impact-accent { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--blue-500); }
+.impact-stat:nth-child(2) .impact-accent { background: var(--purple-500); }
+.impact-stat:nth-child(3) .impact-accent { background: var(--magenta-500); }
+.impact-stat:nth-child(4) .impact-accent { background: var(--green); }
+
+/* ── AUTOMATION ICON GRID (FCA Business Plan style) ── */
+.auto-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin: 20px 0;
+}
+.auto-tile {
+  background: var(--surface); border-radius: 10px;
+  padding: 16px 18px; border: 1px solid var(--border);
+}
+.auto-tile-icon {
+  width: 34px; height: 34px; border-radius: 8px;
+  background: var(--blue-100); color: var(--atlas-blue);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; margin-bottom: 10px;
+}
+.auto-tile-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.auto-tile-desc { font-size: 11px; color: var(--text-3); line-height: 1.5; }
+
+/* ── ERROR DECISION GRID (FCA Network Security Q. style) ── */
+.error-decision-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 14px; margin: 24px 0;
+}
+.error-card { border-radius: 12px; padding: 20px 18px; }
+.error-card.hard  { background: var(--red-bg); border: 1px solid var(--red-bd); }
+.error-card.soft  { background: var(--amber-bg); border: 1px solid var(--amber-bd); }
+.error-card.suppl { background: var(--rev-bg); border: 1px solid oklch(78% 0.09 295); }
+.error-card-header { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
+.error-card-icon { font-size: 17px; line-height: 1; }
+.error-card-title { font-size: 13px; font-weight: 700; }
+.error-card.hard  .error-card-title { color: var(--red-text); }
+.error-card.soft  .error-card-title { color: var(--amber-text); }
+.error-card.suppl .error-card-title { color: var(--rev-c); }
+.error-card-desc { font-size: 11px; line-height: 1.55; margin-bottom: 10px; }
+.error-card.hard  .error-card-desc { color: var(--red-text); opacity: .8; }
+.error-card.soft  .error-card-desc { color: var(--amber-text); opacity: .8; }
+.error-card.suppl .error-card-desc { color: var(--rev-c); opacity: .8; }
+.error-examples { font-size: 11px; margin-bottom: 12px; }
+.error-card.hard  .error-examples { color: var(--red-text); }
+.error-card.soft  .error-examples { color: var(--amber-text); }
+.error-card.suppl .error-examples { color: var(--rev-c); }
+.error-examples ul { padding-left: 14px; margin-top: 3px; line-height: 1.6; }
+.error-q { font-size: 11px; font-style: italic; margin-bottom: 6px; font-weight: 600; }
+.error-card.hard  .error-q { color: var(--red-text); opacity: .7; }
+.error-card.soft  .error-q { color: var(--amber-text); opacity: .7; }
+.error-card.suppl .error-q { color: var(--rev-c); opacity: .7; }
+.error-a { font-size: 11px; line-height: 1.55; padding: 10px 12px; background: oklch(100% 0 0 / 0.48); border-radius: 6px; }
+.error-card.hard  .error-a { color: var(--red-text); }
+.error-card.soft  .error-a { color: var(--amber-text); }
+.error-card.suppl .error-a { color: var(--rev-c); }
+
+/* ── PAYMENT TIMELINE (FCA Consumer Investment day-section style) ── */
+.payment-timeline-wrap { margin: 24px 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+.timeline-day-section { border-bottom: 1px solid var(--border); }
+.timeline-day-section:last-child { border-bottom: none; }
+.timeline-day-header {
+  background: var(--brand-dark); padding: 9px 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.timeline-day-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: oklch(99% 0 0 / 0.45); min-width: 42px; }
+.timeline-day-title { font-size: 12px; font-weight: 700; color: oklch(99% 0 0); }
+.timeline-statuses { display: flex; gap: 0; }
+.timeline-status-item { flex: 1; padding: 14px 18px; border-right: 1px solid var(--border); }
+.timeline-status-item:last-child { border-right: none; }
+.timeline-status-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+.timeline-status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.s-dot-sys  { background: var(--atlas-blue); }
+.s-dot-ops  { background: var(--amber); }
+.s-dot-trs  { background: var(--purple-500); }
+.s-dot-done { background: var(--green); }
+.s-dot-fail { background: var(--red); }
+.timeline-status-who { font-size: 9px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
+.timeline-status-desc { font-size: 11px; color: var(--text-2); line-height: 1.5; }
 
 /* ── SECTION HEADERS ── */
 .section-header { margin-bottom: 32px; }
@@ -462,23 +546,25 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
 <!-- ═══ PAGE 1: COVER ═══ -->
 <div class="page cover">
   <div class="cover-header">
-    <div class="cover-header-brand">Atlas HXM</div>
     <div class="cover-header-type">Internal Training Document</div>
+    <svg width="164" height="44" viewBox="0 0 164 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Atlas HXM">
+      <circle cx="8"  cy="9" r="5.5" fill="#0559FA"/>
+      <circle cx="21" cy="9" r="5.5" fill="#5B27E3"/>
+      <circle cx="34" cy="9" r="5.5" fill="#C840E9"/>
+      <text x="0" y="42" font-family="Nunito,ui-rounded,system-ui,sans-serif" font-size="27" font-weight="900" fill="white" letter-spacing="-0.8">ätlas</text>
+      <text x="108" y="27" font-family="Nunito,ui-rounded,system-ui,sans-serif" font-size="11" font-weight="600" font-style="italic" fill="rgba(255,255,255,0.55)">HXM</text>
+    </svg>
   </div>
   <div class="cover-body">
 
     <!-- Atlas HXM Logo -->
     <div class="cover-logo-wrap">
-      <svg width="140" height="34" viewBox="0 0 140 34" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Atlas HXM">
-        <!-- Dot cluster -->
-        <circle cx="9"  cy="7"  r="4.5" fill="#7C3AED"/>
-        <circle cx="17" cy="3"  r="4.5" fill="#EC4899"/>
-        <circle cx="25" cy="7"  r="4.5" fill="#06B6D4"/>
-        <circle cx="17" cy="12" r="4"   fill="#F59E0B"/>
-        <!-- "atlas" text -->
-        <text x="35" y="24" font-family="system-ui,-apple-system,sans-serif" font-size="22" font-weight="800" fill="#111827" letter-spacing="-0.5">atlas</text>
-        <!-- "HXM" superscript -->
-        <text x="112" y="14" font-family="system-ui,-apple-system,sans-serif" font-size="10" font-weight="700" fill="#6B7280" letter-spacing="0.5">HXM</text>
+      <svg width="164" height="44" viewBox="0 0 164 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Atlas HXM">
+        <circle cx="8"  cy="9" r="5.5" fill="#0559FA"/>
+        <circle cx="21" cy="9" r="5.5" fill="#5B27E3"/>
+        <circle cx="34" cy="9" r="5.5" fill="#C840E9"/>
+        <text x="0" y="42" font-family="Nunito,ui-rounded,system-ui,sans-serif" font-size="27" font-weight="900" fill="white" letter-spacing="-0.8">ätlas</text>
+        <text x="108" y="27" font-family="Nunito,ui-rounded,system-ui,sans-serif" font-size="11" font-weight="600" font-style="italic" fill="rgba(255,255,255,0.55)">HXM</text>
       </svg>
     </div>
 
@@ -497,7 +583,7 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
       <div><div class="cover-meta-label">Owner</div><div class="cover-meta-value">Payments & Platform Team</div></div>
     </div>
   </div>
-  <div class="cover-deco" aria-hidden="true">WL</div>
+  <div class="cover-deco" aria-hidden="true">atlas</div>
 </div>
 
 
@@ -527,7 +613,31 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
     <p>The shift from manual, multi-intermediary payroll disbursement to direct, automated wire transfers via Citi.</p>
   </div>
 
-  <!-- Before / After flow infographic -->
+  <!-- Impact at a Glance — FCA Consumer Investment stat strip -->
+  <div class="impact-strip">
+    <div class="impact-stat">
+      <div class="impact-num">57</div>
+      <div class="impact-label">countries via<br>Citi WorldLink</div>
+      <div class="impact-accent"></div>
+    </div>
+    <div class="impact-stat">
+      <div class="impact-num">T+2</div>
+      <div class="impact-label">days to settlement<br>down from T+5</div>
+      <div class="impact-accent"></div>
+    </div>
+    <div class="impact-stat">
+      <div class="impact-num">0</div>
+      <div class="impact-label">intermediaries<br>removed</div>
+      <div class="impact-accent"></div>
+    </div>
+    <div class="impact-stat">
+      <div class="impact-num">100%</div>
+      <div class="impact-label">automated wire<br>instruction</div>
+      <div class="impact-accent"></div>
+    </div>
+  </div>
+
+    <!-- Before / After flow infographic -->
   <div class="flow-infographic">
     <div class="flow-col old">
       <div class="flow-col-header">Before WorldLink — T+5 days</div>
@@ -675,20 +785,65 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
     <p>No human action required for these steps — Atlas and Citi handle them end to end.</p>
   </div>
 
-  <table class="auto-table">
-    <thead><tr><th style="width:30%">What the system does</th><th style="width:40%">How it works</th><th style="width:30%">What you see in Atlas</th></tr></thead>
-    <tbody>
-      <tr><td>G2N data pull from Fabric</td><td>On page load, Atlas queries Fabric DB and populates the Review Payments table with current payroll data</td><td>Employee rows pre-filled with name, net pay, bank details, country</td></tr>
-      <tr><td>Data error detection</td><td>System checks each row for missing net pay, duplicate records, or invalid fields. Hard blocks flagged automatically</td><td>Red "Data Error" badge on affected rows; checkbox disabled</td></tr>
-      <tr><td>Anomaly detection</td><td>System flags rows where net pay is zero, or varies more than the configured threshold from prior run</td><td>Amber ⚠ icon next to net pay; acknowledgement checkbox appears</td></tr>
-      <tr><td>Supplementary payment detection</td><td>If Fabric pushes new data for an already-wired employee, system creates a supplementary row with "Unclassified" badge</td><td>"Supplementary" badge + classification dropdown on the new row</td></tr>
-      <tr><td>Treasury notification</td><td>On submission by Payroll Ops, system sends in-app and email notification to Treasury that a batch is ready</td><td>Treasury sees notification; rows appear in Disburse Salaries tab</td></tr>
-      <tr><td>Pre-flight balance check</td><td>Before authorization, system queries Citi for available balance and validates 10% buffer. Alert fires if funds are short</td><td>Balance check result shown in Disburse Salaries tab</td></tr>
-      <tr><td>Wire instruction generation</td><td>On Treasury authorization, system constructs and sends the wire payload to Citi WorldLink — no manual file upload</td><td>Status moves to "Wire Sent" automatically</td></tr>
-      <tr><td>Status polling from Citi</td><td>System continuously polls Citi for status updates and reflects them in Payment Tracking in real time</td><td>Status progresses: Submitted → Authorized → Wire Sent → Accepted → Settled</td></tr>
-      <tr><td>Audit logging</td><td>Every action (submit, authorize, classify) written to Payroll Edit Log with actor, timestamp, and details</td><td>Full audit trail visible in edit log — no manual recording needed</td></tr>
-    </tbody>
-  </table>
+  <!-- Automation Map — FCA Business Plan icon grid style -->
+  <div class="auto-grid">
+
+    <div class="auto-tile">
+      <div class="auto-tile-icon">🔄</div>
+      <div class="auto-tile-title">G2N Data Pull</div>
+      <div class="auto-tile-desc">Fabric pushes gross-to-net data into Atlas on every page load — no manual export.</div>
+    </div>
+
+    <div class="auto-tile">
+      <div class="auto-tile-icon">🔴</div>
+      <div class="auto-tile-title">Error Detection</div>
+      <div class="auto-tile-desc">Each row checked for missing net pay, duplicates, or invalid fields. Hard blocks set automatically.</div>
+    </div>
+
+    <div class="auto-tile">
+      <div class="auto-tile-icon">⚠️</div>
+      <div class="auto-tile-title">Anomaly Flagging</div>
+      <div class="auto-tile-desc">Zero-pay rows and significant variances from prior run flagged with amber icon — requires acknowledgement.</div>
+    </div>
+
+    <div class="auto-tile">
+      <div class="auto-tile-icon">➕</div>
+      <div class="auto-tile-title">Supplementary Detection</div>
+      <div class="auto-tile-desc">New data for an already-wired employee creates a supplementary row with Unclassified badge.</div>
+    </div>
+
+    <div class="auto-tile">
+      <div class="auto-tile-icon">🔔</div>
+      <div class="auto-tile-title">Treasury Notification</div>
+      <div class="auto-tile-desc">On Payroll Ops submission, in-app and email notification sent to Treasury automatically.</div>
+    </div>
+
+    <div class="auto-tile">
+      <div class="auto-tile-icon">💰</div>
+      <div class="auto-tile-title">Balance Check</div>
+      <div class="auto-tile-desc">System queries Citi account balance and validates 10% buffer before authorization. Alert fires if short.</div>
+    </div>
+
+    <div class="auto-tile">
+      <div class="auto-tile-icon">📡</div>
+      <div class="auto-tile-title">Wire Generation</div>
+      <div class="auto-tile-desc">On Treasury authorization, wire payload is constructed and sent to Citi WorldLink — no file upload.</div>
+    </div>
+
+    <div class="auto-tile">
+      <div class="auto-tile-icon">📊</div>
+      <div class="auto-tile-title">Status Polling</div>
+      <div class="auto-tile-desc">System polls Citi continuously — status progresses from Wire Sent → Accepted → Settled in real time.</div>
+    </div>
+
+    <div class="auto-tile">
+      <div class="auto-tile-icon">📋</div>
+      <div class="auto-tile-title">Audit Logging</div>
+      <div class="auto-tile-desc">Every action written to Payroll Edit Log with actor, timestamp, and details. No manual recording.</div>
+    </div>
+
+  </div>
+
 
   <div class="callout success">
     <div class="callout-eyebrow"><span class="callout-icon">✅</span><span class="callout-title">What this eliminates</span></div>
@@ -762,16 +917,91 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
     <p>How to read the Payment Tracking tab from submission through to settled.</p>
   </div>
 
-  <div class="status-pipeline">
-    <div class="status-node s-draft">Draft<div class="status-sub">Payroll Ops review</div></div>
-    <div class="status-node s-submit">Submitted<div class="status-sub">Pending Treasury</div></div>
-    <div class="status-node s-auth">Authorized<div class="status-sub">Treasury approved</div></div>
-    <div class="status-node s-auto">Wire Sent<div class="status-sub">Sent to Citi</div></div>
-    <div class="status-node s-accepted">Accepted<div class="status-sub">Citi confirmed</div></div>
-    <div class="status-node s-settled">Settled<div class="status-sub">Employee paid T+2</div></div>
+  <!-- Payment Lifecycle Timeline — FCA Consumer Investment day-section style -->
+  <div class="payment-timeline-wrap">
+
+    <div class="timeline-day-section">
+      <div class="timeline-day-header">
+        <span class="timeline-day-label">Day 0</span>
+        <span class="timeline-day-title">Payroll Ops review and submission</span>
+      </div>
+      <div class="timeline-statuses">
+        <div class="timeline-status-item">
+          <div>
+            <div class="timeline-status-name"><span class="timeline-status-dot s-dot-sys"></span>Draft</div>
+            <div class="timeline-status-who">System</div>
+            <div class="timeline-status-desc">G2N received, row ready to review</div>
+          </div>
+        </div>
+        <div class="timeline-status-item">
+          <div>
+            <div class="timeline-status-name"><span class="timeline-status-dot s-dot-ops"></span>Submitted</div>
+            <div class="timeline-status-who">Payroll Ops</div>
+            <div class="timeline-status-desc">Locked, pending Treasury</div>
+          </div>
+        </div>
+        <div class="timeline-status-item">
+          <div>
+            <div class="timeline-status-name"><span class="timeline-status-dot s-dot-trs"></span>Authorized</div>
+            <div class="timeline-status-who">Treasury</div>
+            <div class="timeline-status-desc">Wire instruction generating</div>
+          </div>
+        </div>
+        <div class="timeline-status-item">
+          <div>
+            <div class="timeline-status-name"><span class="timeline-status-dot s-dot-sys"></span>Wire Sent</div>
+            <div class="timeline-status-who">System</div>
+            <div class="timeline-status-desc">Delivered to Citi WorldLink</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-day-section">
+      <div class="timeline-day-header">
+        <span class="timeline-day-label">Day 1</span>
+        <span class="timeline-day-title">Citi processing</span>
+      </div>
+      <div class="timeline-statuses">
+        <div class="timeline-status-item">
+          <div>
+            <div class="timeline-status-name"><span class="timeline-status-dot s-dot-sys"></span>Instruction Accepted</div>
+            <div class="timeline-status-who">System / Citi</div>
+            <div class="timeline-status-desc">Citi confirmed — wire in motion</div>
+          </div>
+        </div>
+        <div class="timeline-status-item" style="flex:3">
+          <div style="font-size:11px;color:var(--text-3);padding-top:2px;">Settlement expected next business day. No action required — monitor Payment Tracking tab.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-day-section">
+      <div class="timeline-day-header">
+        <span class="timeline-day-label">Day 2</span>
+        <span class="timeline-day-title">Settlement — employee receives payment</span>
+      </div>
+      <div class="timeline-statuses">
+        <div class="timeline-status-item">
+          <div>
+            <div class="timeline-status-name"><span class="timeline-status-dot s-dot-done"></span>Settled</div>
+            <div class="timeline-status-who">System / Citi</div>
+            <div class="timeline-status-desc">Funds received. Cycle complete, audit record closed.</div>
+          </div>
+        </div>
+        <div class="timeline-status-item">
+          <div>
+            <div class="timeline-status-name"><span class="timeline-status-dot s-dot-fail"></span>Failed</div>
+            <div class="timeline-status-who">System / Citi</div>
+            <div class="timeline-status-desc">Wire rejected (invalid IBAN, AML). Review reason and escalate to Payments team with wire reference.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <table>
+    <table>
     <thead><tr><th style="width:18%">Status</th><th style="width:14%">Who sets it</th><th style="width:38%">What it means</th><th style="width:30%">What to do</th></tr></thead>
     <tbody>
       <tr><td><strong>Draft</strong></td><td class="td-auto">System</td><td>G2N data received, row ready for Payroll Ops to review</td><td>Review for flags; select and submit</td></tr>
@@ -808,31 +1038,51 @@ ul.checklist li::before { content: '✓'; position: absolute; left: 0; color: va
     <p>The system surfaces three types of issues. Here is how to handle each one.</p>
   </div>
 
-  <div class="flag-block err">
-    <div class="flag-header"><span class="flag-icon">🔴</span><strong class="flag-title">Hard Block — Data Error</strong></div>
-    <p class="flag-desc">The system received invalid or missing data from Fabric. This row cannot be submitted until the source data is fixed.</p>
-    <div class="flag-examples">Examples:
-      <ul><li>Net pay is null or missing</li><li>Duplicate record received for the same employee</li><li>Invalid bank account format / IBAN fails validation</li></ul>
+  <!-- Error Types — FCA Network Security Q. decision card style -->
+  <div class="error-decision-grid">
+
+    <div class="error-card hard">
+      <div class="error-card-header">
+        <span class="error-card-icon">🔴</span>
+        <strong class="error-card-title">Hard Block — Data Error</strong>
+      </div>
+      <p class="error-card-desc">Invalid or missing data from Fabric. Row cannot be submitted until the source is corrected.</p>
+      <div class="error-examples">Examples:
+        <ul><li>Net pay is null or missing</li><li>Duplicate record for same employee</li><li>Invalid IBAN fails validation</li></ul>
+      </div>
+      <div class="error-q">Q. What should I do?</div>
+      <div class="error-a">Contact the Payroll data team or fix in LPP/Fabric. Refresh the page — the row will update. Do not submit any workaround.</div>
     </div>
-    <div class="flag-action"><strong>What to do:</strong> Contact the Payroll data team or check LPP/Fabric for the specific employee. Once corrected, refresh the page — the row will update. Do NOT submit any workaround.</div>
-  </div>
 
-  <div class="flag-block warn">
-    <div class="flag-header"><span class="flag-icon">🟡</span><strong class="flag-title">Soft Warning — Anomalous Data</strong></div>
-    <p class="flag-desc">Data is technically valid but unusual. You CAN submit — but must manually acknowledge the row first.</p>
-    <div class="flag-examples">Examples:
-      <ul><li>Net pay is zero — "please verify before submitting"</li><li>Net pay significantly higher than prior run — "net pay is 28% higher than previous run"</li></ul>
+    <div class="error-card soft">
+      <div class="error-card-header">
+        <span class="error-card-icon">🟡</span>
+        <strong class="error-card-title">Soft Warning — Anomaly</strong>
+      </div>
+      <p class="error-card-desc">Data is valid but unusual. You <em>can</em> submit — but must manually acknowledge the row first.</p>
+      <div class="error-examples">Examples:
+        <ul><li>Net pay is zero — verify before submitting</li><li>Net pay 28% higher than prior run</li></ul>
+      </div>
+      <div class="error-q">Q. What should I do?</div>
+      <div class="error-a">Read the tooltip. Verify with payroll data team or client. Tick the acknowledgement checkbox if correct. If wrong, fix at source.</div>
     </div>
-    <div class="flag-action"><strong>What to do:</strong> Read the tooltip on the amber icon. Verify the amount with the payroll data team or client. If correct, tick the acknowledgement checkbox. If incorrect, escalate to fix at source.</div>
+
+    <div class="error-card suppl">
+      <div class="error-card-header">
+        <span class="error-card-icon">🔵</span>
+        <strong class="error-card-title">Supplementary Payment</strong>
+      </div>
+      <p class="error-card-desc">Fabric pushed new data for an employee whose payment is already wired. Treated as a separate new payment.</p>
+      <div class="error-examples">Appears as:
+        <ul><li>New row with "Supplementary" badge</li><li>Classification dropdown shown</li></ul>
+      </div>
+      <div class="error-q">Q. What should I do?</div>
+      <div class="error-a">Select a classification: Correction / Supplementary Pay / Bonus / Other. This unlocks the row. The original payment is not affected.</div>
+    </div>
+
   </div>
 
-  <div class="flag-block suppl">
-    <div class="flag-header"><span class="flag-icon">🔵</span><strong class="flag-title">Supplementary Payment</strong></div>
-    <p class="flag-desc">Fabric has pushed new data for an employee whose payment has already been authorized or wired. Treated as a new, separate payment — not a modification of the original.</p>
-    <div class="flag-action"><strong>What to do:</strong> Select a classification from the dropdown (Correction / Supplementary Pay / Bonus / Other). This unlocks the row for submission. The original payment is not affected.</div>
-  </div>
-
-  <!-- Screenshot 3: Exceptions tab -->
+    <!-- Screenshot 3: Exceptions tab -->
   <div class="screenshot-wrap">
     <img src="atlas-ss-3.png" alt="Atlas Exceptions tab — Germany batch with Action Required and failed payments" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
     <div style="display:none;border:1.5px dashed var(--border-md);border-radius:8px;background:var(--surface);height:140px;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:var(--text-3);font-size:13px;">
